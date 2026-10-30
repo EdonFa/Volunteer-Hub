@@ -1,0 +1,1 @@
+Service app side, to build later (daniel 30.10.2025)
