@@ -1,6 +1,7 @@
 package volunteerhub.domain;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Event {
@@ -89,6 +90,19 @@ public class Event {
         return endDate;
     }
 
+    /*
+     * The two single-date setters are needed by JSON-B: when the web service receives an event as JSON,
+     * it creates an empty Event and calls one setter per JSON property. Each setter checks the date
+     * against the other one only if both are known, so the order of the JSON properties does not matter.
+     */
+    public void setStartDate(LocalDate startDate) {
+        setPeriod(startDate, this.endDate);
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        setPeriod(this.startDate, endDate);
+    }
+
     public void setPeriod(LocalDate startDate, LocalDate endDate) {
         if (startDate != null && endDate != null && endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date must not be before start date");
@@ -114,6 +128,17 @@ public class Event {
             throw new IllegalArgumentException("Volunteers needed must be above 0");
         }
         this.volunteersNeeded = volunteersNeeded;
+    }
+
+    /**
+     * Closes the recruitment, e.g. when the organisation has found enough volunteers:
+     * the event stays visible but volunteers can no longer save it. Only a published event can be closed.
+     */
+    public void closeRecruitment() {
+        if (status != EventStatus.PUBLISHED) {
+            throw new IllegalStateException("Only a published event can be closed, but its status is " + status);
+        }
+        status = EventStatus.CLOSED;
     }
 
     public String getRecruitmentLink() {
@@ -143,11 +168,29 @@ public class Event {
     }
 
     public void expireIfPast() {
-        if (status == EventStatus.PUBLISHED && endDate != null && endDate.isBefore(LocalDate.now())) {
+        boolean visible = status == EventStatus.PUBLISHED || status == EventStatus.CLOSED;
+        if (visible && endDate != null && endDate.isBefore(LocalDate.now())) {
             status = EventStatus.EXPIRED;
         }
     }
 
+    /*
+     * Two events are equal when they have the same id (same idea as Topic in StudyBuddy, equal titles).
+     * An event without an id yet (not registered in the service) is only equal to itself, so two
+     * different new events are never mixed up. The service gives an event its id before putting it
+     * in any collection, so its hashCode never changes while it is inside a HashSet or a HashMap.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Event event)) return false;
+        return eventId != null && eventId.equals(event.eventId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(eventId);
+    }
 
     @Override
     public String toString() {

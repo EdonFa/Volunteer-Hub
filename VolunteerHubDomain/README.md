@@ -5,7 +5,7 @@ Package: `volunteerhub.domain`. First version of the domain model. May change as
 ```
 ENUMS
 AccountStatus   ACTIVE, SUSPENDED
-EventStatus     PENDING, PUBLISHED, REFUSED, EXPIRED
+EventStatus     PENDING, PUBLISHED, REFUSED, CLOSED, EXPIRED
 
 PLAIN CLASSES
 Address         street, postalCode, city (all String)
@@ -102,3 +102,32 @@ In IntelliJ: right-click `src/test/java` and choose **Run 'All Tests'**. Require
 - [ ] Hash passwords in the service with `Utils.hashPassword`
 - [ ] Call `expireIfPast()` when the service lists events
 - [ ] Filter events by volunteer dates and city in the service
+
+# Coding session 09.11
+
+## What we did (domain model v2)
+
+Changes needed by the service app (JSON) and to match the project description. 56 tests, all passing (10 new).
+
+- `EventStatus`: new status `CLOSED`
+- `Event`: `closeRecruitment()`, `setStartDate` / `setEndDate`, `equals` / `hashCode` on `eventId`
+- `Organisation`: `closeRecruitment(event)`, `setEvents`, `replaceWith`
+- `Volunteer`: `setAvailableFrom` / `setAvailableTo`, `setPreferredCategories`, `setSavedEvents`, `replaceWith`
+- `User`: `replaceWith`
+
+## Things to know about the code
+
+- JSON-B (used by the service) creates an empty object and calls one setter per JSON property, in any order. That is why single date setters and list setters were added. A date setter checks the period only when both dates are known.
+- Event status flow: `PENDING` to `PUBLISHED` or `REFUSED`, `PUBLISHED` to `CLOSED` (close recruitment). `PUBLISHED` and `CLOSED` events become `EXPIRED` after their end date.
+- When an event is full, the organisation closes the recruitment: the event stays visible but can no longer be saved by volunteers. The group decided not to track `volunteersStillNeeded` (it is in the project description, but the organisation takes the offer down when it is full).
+- Two events are equal when they have the same `eventId`, like `Topic` in StudyBuddy. An event without id is only equal to itself. The service gives the id before putting the event in a collection.
+- `replaceWith` copies a profile for a PUT request, like in StudyBuddy. It never copies the id, the status, the events or the saved events. An empty password keeps the current one.
+
+## Still different from the project description
+
+- Volunteers have one availability period (`availableFrom`, `availableTo`) instead of a list of time slots. To discuss with the team.
+
+## Next tasks
+
+- [ ] Review the changes with the team and merge the `service` branch
+- [ ] Decide about time slots

@@ -91,6 +91,24 @@ public class User {
         this.status = status;
     }
 
+    /**
+     * Copies the profile data of another user (used by the web service for PUT requests).
+     * The id and the account status are not copied: the id never changes and the status
+     * can only be changed by an administrator.
+     */
+    public void replaceWith(User other) {
+        if (other == null) {
+            throw new IllegalArgumentException("User must not be null");
+        }
+        this.firstName = other.firstName;
+        this.lastName = other.lastName;
+        this.username = other.username;
+        this.email = other.email;
+        if (other.password != null && !other.password.isBlank()) {
+            this.password = other.password;
+        }
+    }
+
     public String describe() {
         return "id=" + this.uuid + ", firstName='" + this.firstName + "', lastName='" + this.lastName + "'" +
                 ", username='" + this.username + "', email='" + this.email + "', status=" + this.status;

@@ -57,6 +57,15 @@ public class Volunteer extends User {
         return availableTo;
     }
 
+    // single-date setters needed by JSON-B (same idea as Event.setStartDate / setEndDate)
+    public void setAvailableFrom(LocalDate from) {
+        setAvailability(from, this.availableTo);
+    }
+
+    public void setAvailableTo(LocalDate to) {
+        setAvailability(this.availableFrom, to);
+    }
+
     public void setAvailability(LocalDate from, LocalDate to) {
         if (from != null && to != null && to.isBefore(from)) {
             throw new IllegalArgumentException("Availability end date must not be before start date");
@@ -78,6 +87,33 @@ public class Volunteer extends User {
 
     public void removePreferredCategory(Category category) {
         preferredCategories.remove(category);
+    }
+
+    // list setters needed by JSON-B; they go through the same checks as the add methods
+    public void setPreferredCategories(List<Category> categories) {
+        preferredCategories.clear();
+        if (categories != null) {
+            categories.forEach(this::addPreferredCategory);
+        }
+    }
+
+    public void setSavedEvents(List<Event> events) {
+        savedEvents.clear();
+        if (events != null) {
+            events.forEach(this::saveEvent);
+        }
+    }
+
+    /**
+     * Copies the profile data and preferences of another volunteer (used by the web service for PUT
+     * requests). Saved events are not copied: they are managed with saveEvent / removeSavedEvent.
+     */
+    public void replaceWith(Volunteer other) {
+        super.replaceWith(other);
+        this.address = other.address;
+        setAvailability(other.availableFrom, other.availableTo);
+        this.preferredLocation = other.preferredLocation;
+        setPreferredCategories(other.getPreferredCategories());
     }
 
     public List<Event> getSavedEvents() {

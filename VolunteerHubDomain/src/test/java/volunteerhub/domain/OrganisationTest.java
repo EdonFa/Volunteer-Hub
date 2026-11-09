@@ -113,4 +113,34 @@ class OrganisationTest {
         assertTrue(jazzAssociation.toString().startsWith("Organisation{"));
         assertTrue(jazzAssociation.toString().contains("Jazz Association"));
     }
+
+    @Test
+    void testCloseRecruitment() {
+        printMethodName();
+        jazzAssociation.addEvent(festival);
+        festival.setStatus(EventStatus.PUBLISHED);
+        jazzAssociation.closeRecruitment(festival);
+        assertEquals(EventStatus.CLOSED, festival.getStatus());
+    }
+
+    @Test
+    void testActionsFailure_NotOwnEvent() {
+        printMethodName();
+        assertThrows(IllegalStateException.class, () -> jazzAssociation.closeRecruitment(festival));
+    }
+
+    @Test
+    void testReplaceWith() {
+        printMethodName();
+        jazzAssociation.addEvent(festival);
+        var update = new Organisation("Marie", "Durand", "marie@jazz.org", "marie", null,
+                "Jazz Lausanne", "+41 21 000 00 00", "https://jazzlausanne.example.org");
+        var id = jazzAssociation.getUUID();
+        jazzAssociation.replaceWith(update);
+        assertEquals(id, jazzAssociation.getUUID());
+        assertEquals("Durand", jazzAssociation.getLastName());
+        assertEquals("Jazz Lausanne", jazzAssociation.getOrganisationName());
+        assertEquals("1234", jazzAssociation.getPassword()); // no new password: the old one is kept
+        assertEquals(1, jazzAssociation.getEvents().size()); // events are not replaced
+    }
 }

@@ -142,4 +142,54 @@ class EventTest {
         festival.expireIfPast();
         assertEquals(EventStatus.REFUSED, festival.getStatus());
     }
+
+    @Test
+    void testSingleDateSetters() {
+        printMethodName();
+        festival.setEndDate(LocalDate.of(2026, 11, 15));
+        festival.setStartDate(LocalDate.of(2026, 11, 14));
+        assertEquals(LocalDate.of(2026, 11, 14), festival.getStartDate());
+        assertEquals(LocalDate.of(2026, 11, 15), festival.getEndDate());
+        assertThrows(IllegalArgumentException.class, () -> festival.setStartDate(LocalDate.of(2026, 11, 16)));
+        assertThrows(IllegalArgumentException.class, () -> festival.setEndDate(LocalDate.of(2026, 11, 13)));
+
+        // an empty event (as created by JSON-B) accepts the dates in any order
+        var fromJson = new Event();
+        fromJson.setEndDate(LocalDate.of(2026, 12, 2));
+        fromJson.setStartDate(LocalDate.of(2026, 12, 1));
+        assertEquals(LocalDate.of(2026, 12, 1), fromJson.getStartDate());
+    }
+
+
+    @Test
+    void testCloseRecruitment() {
+        printMethodName();
+        Exception exception = assertThrows(IllegalStateException.class, () -> festival.closeRecruitment());
+        assertTrue(exception.getMessage().contains("Only a published event can be closed"));
+        festival.setStatus(EventStatus.PUBLISHED);
+        festival.closeRecruitment();
+        assertEquals(EventStatus.CLOSED, festival.getStatus());
+    }
+
+    @Test
+    void testClosedEventExpires() {
+        printMethodName();
+        festival.setPeriod(LocalDate.now().minusDays(3), LocalDate.now().minusDays(1));
+        festival.setStatus(EventStatus.CLOSED);
+        festival.expireIfPast();
+        assertEquals(EventStatus.EXPIRED, festival.getStatus());
+    }
+
+    @Test
+    void testEquals() {
+        printMethodName();
+        var other = new Event("Other", "Other event", venue, LocalDate.of(2026, 11, 10),
+                LocalDate.of(2026, 11, 12), music, 5, "https://other.example.org");
+        assertNotEquals(festival, other); // no id yet: only equal to itself
+        var id = UUID.randomUUID();
+        festival.setEventId(id);
+        other.setEventId(id);
+        assertEquals(festival, other);
+        assertEquals(festival.hashCode(), other.hashCode());
+    }
 }

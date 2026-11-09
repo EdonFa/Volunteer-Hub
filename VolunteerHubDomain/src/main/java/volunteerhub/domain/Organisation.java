@@ -70,13 +70,19 @@ public class Organisation extends User {
         events.remove(event);
     }
 
+    /**
+     * Used by JSON-B only: the web service manages the events of an organisation through
+     * addEvent / removeEvent, never by replacing the whole list.
+     */
+    public void setEvents(List<Event> events) {
+        this.events = events == null ? new ArrayList<>() : new ArrayList<>(events);
+    }
+
     public void editEvent(Event event, Event newData) {
         if (event == null || newData == null) {
             throw new IllegalArgumentException("Event must not be null");
         }
-        if (!events.contains(event)) {
-            throw new IllegalStateException("Event does not belong to this organisation");
-        }
+        checkOwnership(event);
         event.setTitle(newData.getTitle());
         event.setDescription(newData.getDescription());
         event.setLocation(newData.getLocation());
@@ -85,6 +91,31 @@ public class Organisation extends User {
         event.setVolunteersNeeded(newData.getVolunteersNeeded());
         event.setRecruitmentLink(newData.getRecruitmentLink());
         event.setStatus(EventStatus.PENDING);
+    }
+
+    public void closeRecruitment(Event event) {
+        checkOwnership(event);
+        event.closeRecruitment();
+    }
+
+    /**
+     * Copies the profile data of another organisation (used by the web service for PUT requests).
+     * The id, the status and the list of events are not copied: they are managed by dedicated actions.
+     */
+    public void replaceWith(Organisation other) {
+        super.replaceWith(other);
+        this.organisationName = other.organisationName;
+        this.phoneNumber = other.phoneNumber;
+        this.websiteUrl = other.websiteUrl;
+    }
+
+    private void checkOwnership(Event event) {
+        if (event == null) {
+            throw new IllegalArgumentException("Event must not be null");
+        }
+        if (!events.contains(event)) {
+            throw new IllegalStateException("Event does not belong to this organisation");
+        }
     }
 
     @Override
