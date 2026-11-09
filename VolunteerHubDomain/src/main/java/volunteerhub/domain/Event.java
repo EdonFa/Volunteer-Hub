@@ -1,6 +1,7 @@
 package volunteerhub.domain;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Event {
@@ -205,8 +206,10 @@ public class Event {
     }
 
     /*
-     * Two events are equal when they have the same id. An event without an id yet (not registered in
-     * the service) is only equal to itself, so two different new events are never mixed up.
+     * Two events are equal when they have the same id (same idea as Topic in StudyBuddy, equal titles).
+     * An event without an id yet (not registered in the service) is only equal to itself, so two
+     * different new events are never mixed up. The service gives an event its id before putting it
+     * in any collection, so its hashCode never changes while it is inside a HashSet or a HashMap.
      */
     @Override
     public boolean equals(Object o) {
@@ -217,7 +220,7 @@ public class Event {
 
     @Override
     public int hashCode() {
-        return eventId != null ? eventId.hashCode() : System.identityHashCode(this);
+        return Objects.hashCode(eventId);
     }
 
     @Override
