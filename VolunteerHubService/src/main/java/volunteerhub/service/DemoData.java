@@ -51,12 +51,10 @@ final class DemoData {
         state.addOrganisation(new Organisation(CINE_CLUB, "Sophie", "Rochat", "sophie@cine-riviera.ch",
                 "sophie", PASSWORD, "Ciné-Club Riviera", "+41 21 555 03 03", "https://cine-riviera.example.ch"));
 
-        var jazzNight = event(JAZZ_NIGHT, JAZZ_ASSOCIATION, "Jazz Night at the Lake",
+        state.importEvent(event(JAZZ_NIGHT, JAZZ_ASSOCIATION, "Jazz Night at the Lake",
                 "Welcome the public, sell drinks and help backstage during three evenings of jazz.",
                 new Address("Quai d'Ouchy 1", "1006", "Lausanne"), today.plusDays(5), today.plusDays(7),
-                music, 12, "https://jazz-lausanne.example.ch/volunteers");
-        state.importEvent(jazzNight, EventStatus.PUBLISHED);
-        jazzNight.updateVolunteersStillNeeded(5);
+                music, 12, "https://jazz-lausanne.example.ch/volunteers"), EventStatus.PUBLISHED);
 
         state.importEvent(event(URBAN_DANCE, DANCE_COLLECTIVE, "Urban Dance Festival",
                 "Guide the audience, set up the stages and welcome the dancers.",

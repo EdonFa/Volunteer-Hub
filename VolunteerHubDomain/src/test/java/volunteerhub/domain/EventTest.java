@@ -160,24 +160,6 @@ class EventTest {
         assertEquals(LocalDate.of(2026, 12, 1), fromJson.getStartDate());
     }
 
-    @Test
-    void testVolunteersStillNeeded() {
-        printMethodName();
-        assertEquals(10, festival.getVolunteersStillNeeded());
-        festival.updateVolunteersStillNeeded(4);
-        assertEquals(4, festival.getVolunteersStillNeeded());
-        assertThrows(IllegalArgumentException.class, () -> festival.updateVolunteersStillNeeded(11));
-        assertThrows(IllegalArgumentException.class, () -> festival.updateVolunteersStillNeeded(-1));
-        assertEquals(4, festival.getVolunteersStillNeeded());
-    }
-
-    @Test
-    void testStillNeededZeroClosesPublishedEvent() {
-        printMethodName();
-        festival.setStatus(EventStatus.PUBLISHED);
-        festival.updateVolunteersStillNeeded(0);
-        assertEquals(EventStatus.CLOSED, festival.getStatus());
-    }
 
     @Test
     void testCloseRecruitment() {

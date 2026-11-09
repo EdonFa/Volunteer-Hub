@@ -15,7 +15,6 @@ public class Event {
     private LocalDate endDate;
     private Category category;
     private int volunteersNeeded;
-    private int volunteersStillNeeded;
     private String recruitmentLink;
     private EventStatus status;
 
@@ -41,7 +40,6 @@ public class Event {
         this.recruitmentLink = recruitmentLink;
         setPeriod(startDate, endDate);
         setVolunteersNeeded(volunteersNeeded);
-        this.volunteersStillNeeded = volunteersNeeded; // a new event still needs all its volunteers
     }
 
     public UUID getEventId() {
@@ -132,38 +130,9 @@ public class Event {
         this.volunteersNeeded = volunteersNeeded;
     }
 
-    public int getVolunteersStillNeeded() {
-        return volunteersStillNeeded;
-    }
-
-    /*
-     * Plain setter (used by JSON-B): it only rejects negative numbers, because JSON properties can arrive
-     * in any order. The upper bound (never more than volunteersNeeded) is checked by
-     * updateVolunteersStillNeeded, which is the method the application uses.
-     */
-    public void setVolunteersStillNeeded(int volunteersStillNeeded) {
-        if (volunteersStillNeeded < 0) {
-            throw new IllegalArgumentException("Volunteers still needed must not be negative");
-        }
-        this.volunteersStillNeeded = volunteersStillNeeded;
-    }
-
     /**
-     * Updates the number of volunteers still needed. When it reaches 0, a published event is closed
-     * automatically, since the organisation does not need anyone anymore.
-     */
-    public void updateVolunteersStillNeeded(int stillNeeded) {
-        if (stillNeeded < 0 || stillNeeded > volunteersNeeded) {
-            throw new IllegalArgumentException("Volunteers still needed must be between 0 and " + volunteersNeeded);
-        }
-        this.volunteersStillNeeded = stillNeeded;
-        if (stillNeeded == 0 && status == EventStatus.PUBLISHED) {
-            status = EventStatus.CLOSED;
-        }
-    }
-
-    /**
-     * Closes the recruitment: only a published event can be closed.
+     * Closes the recruitment, e.g. when the organisation has found enough volunteers:
+     * the event stays visible but volunteers can no longer save it. Only a published event can be closed.
      */
     public void closeRecruitment() {
         if (status != EventStatus.PUBLISHED) {
@@ -228,6 +197,6 @@ public class Event {
         return "Event{eventId=" + eventId + ", organisationId=" + organisationId + ", title='" + title + "'" +
                 ", description='" + description + "', location=" + location + ", startDate=" + startDate +
                 ", endDate=" + endDate + ", category=" + category + ", volunteersNeeded=" + volunteersNeeded +
-                ", volunteersStillNeeded=" + volunteersStillNeeded + ", recruitmentLink='" + recruitmentLink + "', status=" + status + "}";
+                ", recruitmentLink='" + recruitmentLink + "', status=" + status + "}";
     }
 }

@@ -5,7 +5,7 @@ Package: `volunteerhub`. REST web service that exposes the domain model (`Volunt
 ```
 REST (package volunteerhub.rest)
 VolunteerHubService     @ApplicationPath("/api"), prefix of every URL
-EventResource           /events          CRUD + close, still needed, weather
+EventResource           /events          CRUD + close recruitment, weather
 VolunteerResource       /volunteers      CRUD + saved events, recommendations
 OrganisationResource    /organisations   CRUD + events of an organisation
 AdministratorResource   /administrators  accept / refuse events, suspend / reactivate / remove accounts
@@ -40,7 +40,6 @@ POST    /events                         post an event (organisationId in the bod
 PUT     /events/{id}                    edit an event, back to PENDING
 DELETE  /events/{id}                    delete an event
 PUT     /events/{id}/close              close recruitment
-PUT     /events/{id}/still-needed/{n}   update volunteers still needed
 GET     /events/{id}/weather            weather forecast (Open-Meteo)
 
 GET     /volunteers                     list
@@ -79,7 +78,7 @@ GET     /service/reset                  reload the demo data
 
 ## What we did (service app v1)
 
-The service is coded in `src/main/java/volunteerhub` and runs on Payara 7.2026.8 (version of the course How-to). The Postman collection `postman/VolunteerHub.postman_collection.json` has 44 requests in the order of the demo, all passing.
+The service is coded in `src/main/java/volunteerhub` and runs on Payara 7.2026.8 (version of the course How-to). The Postman collection `postman/VolunteerHub.postman_collection.json` has 43 requests in the order of the demo, all passing.
 
 - CRUD for 3 domain classes: `Event`, `Volunteer`, `Organisation`
 - Extras: moderation by the administrator, saved events and recommendations, weather of an event (external API)

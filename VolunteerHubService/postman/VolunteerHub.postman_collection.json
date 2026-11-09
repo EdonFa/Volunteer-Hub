@@ -889,38 +889,7 @@
           }
         },
         {
-          "name": "4 volunteers found → still needed = 4",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/events/{{eventId}}/still-needed/4",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "events",
-                "{{eventId}}",
-                "still-needed",
-                "4"
-              ]
-            },
-            "description": ""
-          }
-        },
-        {
-          "name": "Organisation closes recruitment (→ CLOSED)",
+          "name": "Event is full: organisation closes recruitment (→ CLOSED)",
           "event": [
             {
               "listen": "test",

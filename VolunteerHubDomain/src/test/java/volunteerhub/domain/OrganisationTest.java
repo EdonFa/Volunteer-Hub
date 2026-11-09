@@ -115,19 +115,6 @@ class OrganisationTest {
     }
 
     @Test
-    void testEditEventKeepsVolunteersFound() {
-        printMethodName();
-        jazzAssociation.addEvent(festival);
-        jazzAssociation.updateVolunteersStillNeeded(festival, 7); // 3 volunteers found out of 10
-        var newData = new Event("Jazz Festival", "Bigger edition.", festival.getLocation(),
-                festival.getStartDate(), festival.getEndDate(), festival.getCategory(), 15,
-                festival.getRecruitmentLink());
-        jazzAssociation.editEvent(festival, newData);
-        assertEquals(15, festival.getVolunteersNeeded());
-        assertEquals(12, festival.getVolunteersStillNeeded());
-    }
-
-    @Test
     void testCloseRecruitment() {
         printMethodName();
         jazzAssociation.addEvent(festival);
@@ -140,7 +127,6 @@ class OrganisationTest {
     void testActionsFailure_NotOwnEvent() {
         printMethodName();
         assertThrows(IllegalStateException.class, () -> jazzAssociation.closeRecruitment(festival));
-        assertThrows(IllegalStateException.class, () -> jazzAssociation.updateVolunteersStillNeeded(festival, 2));
     }
 
     @Test

@@ -27,7 +27,6 @@ import java.util.UUID;
  * PUT    /api/events/{id}                 edit an event -> back to PENDING
  * DELETE /api/events/{id}                 delete an event
  * PUT    /api/events/{id}/close           close the recruitment (PUBLISHED -> CLOSED)
- * PUT    /api/events/{id}/still-needed/{n} update the number of volunteers still needed
  * GET    /api/events/{id}/weather         weather forecast (external API)
  * </pre>
  */
@@ -83,12 +82,6 @@ public class EventResource {
     @Path("/{id}/close")
     public Event closeRecruitment(@PathParam("id") UUID id) {
         return state.closeRecruitment(id);
-    }
-
-    @PUT
-    @Path("/{id}/still-needed/{n}")
-    public Event updateVolunteersStillNeeded(@PathParam("id") UUID id, @PathParam("n") int stillNeeded) {
-        return state.updateVolunteersStillNeeded(id, stillNeeded);
     }
 
     @GET

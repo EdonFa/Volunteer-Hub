@@ -83,22 +83,14 @@ public class Organisation extends User {
             throw new IllegalArgumentException("Event must not be null");
         }
         checkOwnership(event);
-        int alreadyFound = event.getVolunteersNeeded() - event.getVolunteersStillNeeded();
         event.setTitle(newData.getTitle());
         event.setDescription(newData.getDescription());
         event.setLocation(newData.getLocation());
         event.setPeriod(newData.getStartDate(), newData.getEndDate());
         event.setCategory(newData.getCategory());
         event.setVolunteersNeeded(newData.getVolunteersNeeded());
-        // keep the volunteers already found: if 3 out of 10 were found and the event now needs 15, 12 are still needed
-        event.setVolunteersStillNeeded(Math.max(0, event.getVolunteersNeeded() - alreadyFound));
         event.setRecruitmentLink(newData.getRecruitmentLink());
         event.setStatus(EventStatus.PENDING);
-    }
-
-    public void updateVolunteersStillNeeded(Event event, int stillNeeded) {
-        checkOwnership(event);
-        event.updateVolunteersStillNeeded(stillNeeded);
     }
 
     public void closeRecruitment(Event event) {

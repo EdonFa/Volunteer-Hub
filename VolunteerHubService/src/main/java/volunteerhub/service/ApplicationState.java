@@ -348,7 +348,6 @@ public class ApplicationState {
         }
         event.setEventId(UUID.randomUUID());
         event.setCategory(officialCategory(event.getCategory()));
-        event.setVolunteersStillNeeded(event.getVolunteersNeeded()); // a new event still needs everyone
         organisation.addEvent(event); // domain rule: the event becomes PENDING
         events.put(event.getEventId(), event);
         return event;
@@ -374,12 +373,6 @@ public class ApplicationState {
     public synchronized Event closeRecruitment(UUID id) {
         var event = getEvent(id);
         ownerOf(event).closeRecruitment(event);
-        return event;
-    }
-
-    public synchronized Event updateVolunteersStillNeeded(UUID id, int stillNeeded) {
-        var event = getEvent(id);
-        ownerOf(event).updateVolunteersStillNeeded(event, stillNeeded);
         return event;
     }
 
