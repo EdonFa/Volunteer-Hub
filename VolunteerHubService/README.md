@@ -1,5 +1,7 @@
 ## Service app v1
 
+For the whole picture (journeys, architecture, life cycles, API), see the team guide `docs/VolunteerHub-guide.html`.
+
 Package: `volunteerhub`. REST web service that exposes the domain model (`VolunteerHubDomain`) over HTTP and JSON. Built like StudyBuddyService: Jakarta EE 10 (JAX-RS, CDI, JSON-B), Payara 7 in Docker, tested with Postman.
 
 ```

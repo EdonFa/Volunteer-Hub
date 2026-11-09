@@ -1,5 +1,7 @@
 ## Domain model v1
 
+For the whole picture (journeys, architecture, life cycles, API), see the team guide `docs/VolunteerHub-guide.html`.
+
 Package: `volunteerhub.domain`. First version of the domain model. May change as the project evolves.
 
 ```
