@@ -1,7 +1,8 @@
 # VolunteerHub Service (Phase 1)
 
 REST web service that exposes the VolunteerHub domain model (`VolunteerHubDomain`) over HTTP + JSON.
-Built with Jakarta EE 10 (JAX-RS, CDI, JSON-B), deployed on Payara Server 6 in Docker, tested with Postman.
+Built with Jakarta EE 10 (JAX-RS, CDI, JSON-B), deployed on Payara Server 7.2026.8 in Docker
+(the version of the course How-to), tested with Postman.
 
 ## Run it
 
@@ -16,8 +17,14 @@ Built with Jakarta EE 10 (JAX-RS, CDI, JSON-B), deployed on Payara Server 6 in D
    docker build -t volunteerhub-service .
    docker run --rm --name volunteerhub -p 8080:8080 volunteerhub-service
    ```
-   The service is ready when http://localhost:8080/VolunteerHubService/api/categories answers (about 10 s).
+   The service is ready when http://localhost:8080/VolunteerHubService/ shows
+   "VolunteerHubService Successfully Deployed" (about 10 s).
    Stop it with `Ctrl+C` (or `docker stop volunteerhub`).
+
+   *Course method (How-to 3.4), also works:* start Payara with the `StudyBuddyDocker` folder from Moodle
+   (`docker compose up -d`), then in IntelliJ: Run → Edit Configurations → + → Payara Server → Remote,
+   Deployment tab → + → Artifact → `VolunteerHubService:war`, and run it (green arrow, or the bug icon to debug).
+   Use only one of the two methods at a time: both use port 8080.
 4. **Test it in Postman**: Import → `postman/VolunteerHub.postman_collection.json`.
    Run `0 · Setup / Reset demo data` first, then the folders in order.
 
