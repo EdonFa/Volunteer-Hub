@@ -113,4 +113,48 @@ class OrganisationTest {
         assertTrue(jazzAssociation.toString().startsWith("Organisation{"));
         assertTrue(jazzAssociation.toString().contains("Jazz Association"));
     }
+
+    @Test
+    void testEditEventKeepsVolunteersFound() {
+        printMethodName();
+        jazzAssociation.addEvent(festival);
+        jazzAssociation.updateVolunteersStillNeeded(festival, 7); // 3 volunteers found out of 10
+        var newData = new Event("Jazz Festival", "Bigger edition.", festival.getLocation(),
+                festival.getStartDate(), festival.getEndDate(), festival.getCategory(), 15,
+                festival.getRecruitmentLink());
+        jazzAssociation.editEvent(festival, newData);
+        assertEquals(15, festival.getVolunteersNeeded());
+        assertEquals(12, festival.getVolunteersStillNeeded());
+    }
+
+    @Test
+    void testCloseRecruitment() {
+        printMethodName();
+        jazzAssociation.addEvent(festival);
+        festival.setStatus(EventStatus.PUBLISHED);
+        jazzAssociation.closeRecruitment(festival);
+        assertEquals(EventStatus.CLOSED, festival.getStatus());
+    }
+
+    @Test
+    void testActionsFailure_NotOwnEvent() {
+        printMethodName();
+        assertThrows(IllegalStateException.class, () -> jazzAssociation.closeRecruitment(festival));
+        assertThrows(IllegalStateException.class, () -> jazzAssociation.updateVolunteersStillNeeded(festival, 2));
+    }
+
+    @Test
+    void testReplaceWith() {
+        printMethodName();
+        jazzAssociation.addEvent(festival);
+        var update = new Organisation("Marie", "Durand", "marie@jazz.org", "marie", null,
+                "Jazz Lausanne", "+41 21 000 00 00", "https://jazzlausanne.example.org");
+        var id = jazzAssociation.getUUID();
+        jazzAssociation.replaceWith(update);
+        assertEquals(id, jazzAssociation.getUUID());
+        assertEquals("Durand", jazzAssociation.getLastName());
+        assertEquals("Jazz Lausanne", jazzAssociation.getOrganisationName());
+        assertEquals("1234", jazzAssociation.getPassword()); // no new password: the old one is kept
+        assertEquals(1, jazzAssociation.getEvents().size()); // events are not replaced
+    }
 }

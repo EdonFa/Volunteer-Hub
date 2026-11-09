@@ -111,4 +111,42 @@ class VolunteerTest {
         assertTrue(lea.toString().startsWith("Volunteer{"));
         assertTrue(lea.toString().contains("lea@mail.com"));
     }
+
+    @Test
+    void testSingleDateAvailabilitySetters() {
+        printMethodName();
+        var fromJson = new Volunteer();
+        fromJson.setAvailableTo(LocalDate.of(2026, 11, 20));
+        fromJson.setAvailableFrom(LocalDate.of(2026, 11, 12));
+        assertEquals(LocalDate.of(2026, 11, 12), fromJson.getAvailableFrom());
+        assertThrows(IllegalArgumentException.class, () -> fromJson.setAvailableFrom(LocalDate.of(2026, 11, 21)));
+    }
+
+    @Test
+    void testListSetters() {
+        printMethodName();
+        lea.setPreferredCategories(java.util.List.of(music, theatre, new Category("Music", "duplicate")));
+        assertEquals(2, lea.getPreferredCategories().size());
+        lea.setSavedEvents(java.util.List.of(festival));
+        assertEquals(1, lea.getSavedEvents().size());
+        lea.setPreferredCategories(null);
+        assertTrue(lea.getPreferredCategories().isEmpty());
+    }
+
+    @Test
+    void testReplaceWith() {
+        printMethodName();
+        lea.saveEvent(festival);
+        var update = new Volunteer("Lea", "Martin", "lea.martin@mail.com", "lea", "", null);
+        update.setPreferredLocation("Geneva");
+        update.addPreferredCategory(theatre);
+        update.setAvailability(LocalDate.of(2026, 12, 1), LocalDate.of(2026, 12, 31));
+        lea.replaceWith(update);
+        assertEquals("lea.martin@mail.com", lea.getEmail());
+        assertEquals("Geneva", lea.getPreferredLocation());
+        assertEquals(1, lea.getPreferredCategories().size());
+        assertEquals(LocalDate.of(2026, 12, 1), lea.getAvailableFrom());
+        assertEquals("1234", lea.getPassword()); // blank password: the old one is kept
+        assertEquals(1, lea.getSavedEvents().size()); // saved events are not replaced
+    }
 }

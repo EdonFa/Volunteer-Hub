@@ -5,7 +5,7 @@ Package: `volunteerhub.domain`. First version of the domain model. May change as
 ```
 ENUMS
 AccountStatus   ACTIVE, SUSPENDED
-EventStatus     PENDING, PUBLISHED, REFUSED, EXPIRED
+EventStatus     PENDING, PUBLISHED, REFUSED, CLOSED, EXPIRED
 
 PLAIN CLASSES
 Address         street, postalCode, city (all String)
@@ -102,3 +102,25 @@ In IntelliJ: right-click `src/test/java` and choose **Run 'All Tests'**. Require
 - [ ] Hash passwords in the service with `Utils.hashPassword`
 - [ ] Call `expireIfPast()` when the service lists events
 - [ ] Filter events by volunteer dates and city in the service
+
+# Changes for the web service (Phase 1, branch `service`)
+
+Needed so that the domain can be sent and received as JSON by the service, and to match the project description.
+
+- **JSON-B setters.** JSON-B creates an empty object and calls one setter per JSON property, in any order.
+  Added `Event.setStartDate/setEndDate`, `Volunteer.setAvailableFrom/setAvailableTo` (they check the
+  period only when both dates are known), `Volunteer.setPreferredCategories/setSavedEvents` and
+  `Organisation.setEvents`.
+- **`Event.equals/hashCode` on `eventId`.** An event received in JSON is a new object: without this,
+  a volunteer could save the same event twice. An event without id is only equal to itself.
+- **`replaceWith(...)`** in `User`, `Organisation`, `Volunteer` (same idea as StudyBuddy): copies the
+  profile for a PUT, but never the id, the status, the events or the saved events.
+  An empty password keeps the current one.
+- **From the project description:** `volunteersStillNeeded`, status `CLOSED`,
+  `Organisation.closeRecruitment(event)` and `Organisation.updateVolunteersStillNeeded(event, n)`.
+  When the number reaches 0, a published event closes automatically. Editing an event keeps the
+  volunteers already found. A closed event can still expire.
+- 13 new tests (59 in total, all passing).
+
+Still different from the project description: volunteers have one availability period instead of a
+list of time slots (to discuss with the group).
