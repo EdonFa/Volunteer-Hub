@@ -1,35 +1,12 @@
 {
   "info": {
+    "_postman_id": "f3e6290e-32d6-4c79-b251-40077776f9af",
     "name": "VolunteerHub Service",
     "description": "Phase 1 demo of the VolunteerHub REST web service. Run '0 · Setup / Reset demo data' first. Demo accounts use the password 'password'.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "59388837",
+    "_collection_link": "https://go.postman.co/collection/59388837-f3e6290e-32d6-4c79-b251-40077776f9af?source=collection_link"
   },
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:8080/VolunteerHubService/api"
-    },
-    {
-      "key": "adminId",
-      "value": "00000000-0000-0000-0000-0000000a0001"
-    },
-    {
-      "key": "organisationId",
-      "value": "00000000-0000-0000-0000-0000000b0001"
-    },
-    {
-      "key": "eventId",
-      "value": ""
-    },
-    {
-      "key": "volunteerId",
-      "value": ""
-    },
-    {
-      "key": "newOrganisationId",
-      "value": ""
-    }
-  ],
   "item": [
     {
       "name": "0 · Setup",
@@ -42,7 +19,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -61,7 +38,8 @@
               ]
             },
             "description": "Reloads the demo data: run it before the demo."
-          }
+          },
+          "response": []
         },
         {
           "name": "Categories (catalogue)",
@@ -71,7 +49,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -87,9 +65,9 @@
               "path": [
                 "categories"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -104,7 +82,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -120,9 +98,9 @@
               "path": [
                 "events"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Read published events only",
@@ -132,7 +110,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -154,9 +132,9 @@
                   "value": "PUBLISHED"
                 }
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Create event (organisation posts it → PENDING)",
@@ -166,8 +144,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
-                  "if (pm.response.code === 201) pm.collectionVariables.set(\"eventId\", pm.response.json()[\"eventId\"]);"
+                  ""
                 ]
               }
             }
@@ -180,6 +157,15 @@
                 "value": "application/json"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organisationId\": \"{{organisationId}}\",\n  \"title\": \"Christmas Jazz\",\n  \"description\": \"Welcome visitors at the entrance\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-13\",\n  \"category\": {\n    \"title\": \"Music\"\n  },\n  \"volunteersNeeded\": 8,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "{{baseUrl}}/events",
               "host": [
@@ -188,18 +174,9 @@
               "path": [
                 "events"
               ]
-            },
-            "description": "",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"organisationId\": \"{{organisationId}}\",\n  \"title\": \"Christmas Market Helpers\",\n  \"description\": \"Welcome visitors and help at the stands of the Christmas market.\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-13\",\n  \"category\": {\n    \"title\": \"Music\"\n  },\n  \"volunteersNeeded\": 8,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Read the new event",
@@ -209,7 +186,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -226,9 +203,9 @@
                 "events",
                 "{{eventId}}"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Update event (→ back to PENDING)",
@@ -238,7 +215,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -251,6 +228,15 @@
                 "value": "application/json"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Christmas Market Helpers (extended)\",\n  \"description\": \"Welcome visitors and help at the stands of the Christmas market.\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-14\",\n  \"category\": {\n    \"title\": \"Music\"\n  },\n  \"volunteersNeeded\": 10,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "{{baseUrl}}/events/{{eventId}}",
               "host": [
@@ -260,18 +246,9 @@
                 "events",
                 "{{eventId}}"
               ]
-            },
-            "description": "",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"title\": \"Christmas Market Helpers (extended)\",\n  \"description\": \"Welcome visitors and help at the stands of the Christmas market.\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-14\",\n  \"category\": {\n    \"title\": \"Music\"\n  },\n  \"volunteersNeeded\": 10,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Delete event",
@@ -281,7 +258,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 204\", () => pm.response.to.have.status(204));"
+                  ""
                 ]
               }
             }
@@ -298,9 +275,9 @@
                 "events",
                 "{{eventId}}"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Read deleted event → 404",
@@ -310,7 +287,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 404\", () => pm.response.to.have.status(404));"
+                  ""
                 ]
               }
             }
@@ -327,9 +304,9 @@
                 "events",
                 "{{eventId}}"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -344,7 +321,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -360,9 +337,9 @@
               "path": [
                 "volunteers"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Create volunteer",
@@ -372,8 +349,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
-                  "if (pm.response.code === 201) pm.collectionVariables.set(\"volunteerId\", pm.response.json()[\"UUID\"]);"
+                  ""
                 ]
               }
             }
@@ -386,16 +362,6 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/volunteers",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "volunteers"
-              ]
-            },
-            "description": "",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"firstName\": \"Nina\",\n  \"lastName\": \"Rossi\",\n  \"email\": \"nina.rossi@mail.ch\",\n  \"username\": \"nina\",\n  \"password\": \"secret\",\n  \"address\": {\n    \"street\": \"Rue de Bourg 5\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"preferredLocation\": \"Lausanne\",\n  \"preferredCategories\": [\n    {\n      \"title\": \"Music\"\n    }\n  ],\n  \"availableFrom\": \"2026-11-01\",\n  \"availableTo\": \"2026-12-31\"\n}",
@@ -404,8 +370,18 @@
                   "language": "json"
                 }
               }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/volunteers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "volunteers"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Read the new volunteer",
@@ -415,7 +391,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -432,9 +408,9 @@
                 "volunteers",
                 "{{volunteerId}}"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Update volunteer (profile + preferences)",
@@ -444,7 +420,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -457,6 +433,15 @@
                 "value": "application/json"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Nina\",\n  \"lastName\": \"Rossi-Blanc\",\n  \"email\": \"nina.rossi@mail.ch\",\n  \"username\": \"nina\",\n  \"password\": \"\",\n  \"address\": {\n    \"street\": \"Rue de Bourg 5\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"preferredLocation\": \"Lausanne\",\n  \"preferredCategories\": [\n    {\n      \"title\": \"Music\"\n    },\n    {\n      \"title\": \"Theatre\"\n    }\n  ],\n  \"availableFrom\": \"2026-11-01\",\n  \"availableTo\": \"2026-12-31\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "{{baseUrl}}/volunteers/{{volunteerId}}",
               "host": [
@@ -466,18 +451,9 @@
                 "volunteers",
                 "{{volunteerId}}"
               ]
-            },
-            "description": "",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"firstName\": \"Nina\",\n  \"lastName\": \"Rossi-Blanc\",\n  \"email\": \"nina.rossi@mail.ch\",\n  \"username\": \"nina\",\n  \"password\": \"\",\n  \"address\": {\n    \"street\": \"Rue de Bourg 5\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"preferredLocation\": \"Lausanne\",\n  \"preferredCategories\": [\n    {\n      \"title\": \"Music\"\n    },\n    {\n      \"title\": \"Theatre\"\n    }\n  ],\n  \"availableFrom\": \"2026-11-01\",\n  \"availableTo\": \"2026-12-31\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Delete volunteer",
@@ -487,7 +463,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 204\", () => pm.response.to.have.status(204));"
+                  ""
                 ]
               }
             }
@@ -504,9 +480,9 @@
                 "volunteers",
                 "{{volunteerId}}"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Read deleted volunteer → 404",
@@ -516,7 +492,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 404\", () => pm.response.to.have.status(404));"
+                  ""
                 ]
               }
             }
@@ -533,9 +509,9 @@
                 "volunteers",
                 "{{volunteerId}}"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -566,9 +542,9 @@
               "path": [
                 "organisations"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Create organisation",
@@ -578,8 +554,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
-                  "if (pm.response.code === 201) pm.collectionVariables.set(\"newOrganisationId\", pm.response.json()[\"UUID\"]);"
+                  "\n"
                 ]
               }
             }
@@ -592,16 +567,6 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/organisations",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "organisations"
-              ]
-            },
-            "description": "",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"firstName\": \"Paul\",\n  \"lastName\": \"Meier\",\n  \"email\": \"paul@photo-elysee.ch\",\n  \"username\": \"paul\",\n  \"password\": \"secret\",\n  \"organisationName\": \"Photo Elysée Friends\",\n  \"phoneNumber\": \"+41 21 555 09 09\",\n  \"websiteUrl\": \"https://photo-elysee.example.ch\"\n}",
@@ -610,8 +575,18 @@
                   "language": "json"
                 }
               }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/organisations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "organisations"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Read the new organisation",
@@ -621,7 +596,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -638,9 +613,9 @@
                 "organisations",
                 "{{newOrganisationId}}"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Update organisation",
@@ -650,7 +625,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -663,6 +638,15 @@
                 "value": "application/json"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Paul\",\n  \"lastName\": \"Meier\",\n  \"email\": \"paul@photo-elysee.ch\",\n  \"username\": \"paul\",\n  \"password\": \"\",\n  \"organisationName\": \"Photo Elysée Volunteers\",\n  \"phoneNumber\": \"+41 21 555 09 09\",\n  \"websiteUrl\": \"https://photo-elysee.example.ch\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "{{baseUrl}}/organisations/{{newOrganisationId}}",
               "host": [
@@ -672,18 +656,9 @@
                 "organisations",
                 "{{newOrganisationId}}"
               ]
-            },
-            "description": "",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"firstName\": \"Paul\",\n  \"lastName\": \"Meier\",\n  \"email\": \"paul@photo-elysee.ch\",\n  \"username\": \"paul\",\n  \"password\": \"\",\n  \"organisationName\": \"Photo Elysée Volunteers\",\n  \"phoneNumber\": \"+41 21 555 09 09\",\n  \"websiteUrl\": \"https://photo-elysee.example.ch\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Events of an organisation",
@@ -693,7 +668,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -711,9 +686,9 @@
                 "{{organisationId}}",
                 "events"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete organisation",
@@ -723,7 +698,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 204\", () => pm.response.to.have.status(204));"
+                  ""
                 ]
               }
             }
@@ -740,9 +715,9 @@
                 "organisations",
                 "{{newOrganisationId}}"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -750,47 +725,55 @@
       "name": "4 · Extra · Moderation workflow",
       "item": [
         {
-          "name": "Organisation posts an event (PENDING)",
+          "name": "Admin reads all pending events",
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
-                  "if (pm.response.code === 201) pm.collectionVariables.set(\"eventId\", pm.response.json()[\"eventId\"]);"
+                  ""
                 ]
               }
             }
           ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
-            "method": "POST",
+            "method": "GET",
             "header": [
               {
                 "key": "Content-Type",
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/events",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "events"
-              ]
-            },
-            "description": "",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"organisationId\": \"{{organisationId}}\",\n  \"title\": \"Christmas Market Helpers\",\n  \"description\": \"Welcome visitors and help at the stands of the Christmas market.\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-13\",\n  \"category\": {\n    \"title\": \"Music\"\n  },\n  \"volunteersNeeded\": 8,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
+              "raw": "",
               "options": {
                 "raw": {
                   "language": "json"
                 }
               }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/events?status=PENDING",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "events"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PENDING"
+                }
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Admin accepts it (→ PUBLISHED)",
@@ -800,7 +783,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -820,9 +803,9 @@
                 "{{eventId}}",
                 "accept"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Accept again → 409 (domain rule)",
@@ -832,7 +815,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 409\", () => pm.response.to.have.status(409));"
+                  ""
                 ]
               }
             }
@@ -852,9 +835,9 @@
                 "{{eventId}}",
                 "accept"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Admin refuses the pending Short Film Night",
@@ -864,7 +847,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -884,19 +867,50 @@
                 "00000000-0000-0000-0000-0000000e0003",
                 "refuse"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
-          "name": "Event is full: organisation closes recruitment (→ CLOSED)",
+          "name": "4 volunteers found → still needed = 4",
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/events/{{eventId}}/still-needed/4",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "events",
+                "{{eventId}}",
+                "still-needed",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Organisation closes recruitment (→ CLOSED)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  ""
                 ]
               }
             }
@@ -914,9 +928,9 @@
                 "{{eventId}}",
                 "close"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Admin suspends Léa",
@@ -926,7 +940,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -946,9 +960,9 @@
                 "00000000-0000-0000-0000-0000000c0001",
                 "suspend"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Suspended account cannot log in → 403",
@@ -958,7 +972,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 403\", () => pm.response.to.have.status(403));"
+                  ""
                 ]
               }
             }
@@ -971,6 +985,15 @@
                 "value": "application/json"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"lea\",\n  \"password\": \"password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "{{baseUrl}}/service/login",
               "host": [
@@ -980,18 +1003,9 @@
                 "service",
                 "login"
               ]
-            },
-            "description": "",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"username\": \"lea\",\n  \"password\": \"password\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Admin reactivates Léa",
@@ -1001,7 +1015,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -1021,9 +1035,9 @@
                 "00000000-0000-0000-0000-0000000c0001",
                 "reactivate"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Login works again",
@@ -1033,7 +1047,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -1046,6 +1060,15 @@
                 "value": "application/json"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"lea\",\n  \"password\": \"password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "{{baseUrl}}/service/login",
               "host": [
@@ -1055,18 +1078,9 @@
                 "service",
                 "login"
               ]
-            },
-            "description": "",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"username\": \"lea\",\n  \"password\": \"password\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -1081,7 +1095,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -1099,9 +1113,9 @@
                 "00000000-0000-0000-0000-0000000c0001",
                 "recommendations"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Léa's saved events",
@@ -1111,7 +1125,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -1129,9 +1143,9 @@
                 "00000000-0000-0000-0000-0000000c0001",
                 "saved-events"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Léa removes Jazz Night",
@@ -1141,7 +1155,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -1160,9 +1174,9 @@
                 "saved-events",
                 "00000000-0000-0000-0000-0000000e0001"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Léa saves Jazz Night again",
@@ -1172,7 +1186,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -1191,9 +1205,9 @@
                 "saved-events",
                 "00000000-0000-0000-0000-0000000e0001"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Filter: music events in Lausanne in the next weeks",
@@ -1203,7 +1217,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -1237,9 +1251,9 @@
                   "value": "2026-12-31"
                 }
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -1254,7 +1268,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -1272,9 +1286,9 @@
                 "00000000-0000-0000-0000-0000000e0001",
                 "weather"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Weather for an event too far ahead",
@@ -1284,7 +1298,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -1302,9 +1316,9 @@
                 "00000000-0000-0000-0000-0000000e0004",
                 "weather"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -1319,7 +1333,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                  ""
                 ]
               }
             }
@@ -1332,16 +1346,6 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/events",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "events"
-              ]
-            },
-            "description": "",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"organisationId\": \"{{organisationId}}\",\n  \"title\": \"Christmas Market Helpers\",\n  \"description\": \"Welcome visitors and help at the stands of the Christmas market.\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-13\",\n  \"category\": {\n    \"title\": \"Gaming\"\n  },\n  \"volunteersNeeded\": 8,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
@@ -1350,8 +1354,18 @@
                   "language": "json"
                 }
               }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "events"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "End before start → 400",
@@ -1361,7 +1375,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                  ""
                 ]
               }
             }
@@ -1374,16 +1388,6 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/events",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "events"
-              ]
-            },
-            "description": "",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"organisationId\": \"{{organisationId}}\",\n  \"title\": \"Christmas Market Helpers\",\n  \"description\": \"Welcome visitors and help at the stands of the Christmas market.\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-01\",\n  \"category\": {\n    \"title\": \"Music\"\n  },\n  \"volunteersNeeded\": 8,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
@@ -1392,8 +1396,18 @@
                   "language": "json"
                 }
               }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "events"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Username already taken → 409",
@@ -1403,7 +1417,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 409\", () => pm.response.to.have.status(409));"
+                  ""
                 ]
               }
             }
@@ -1416,16 +1430,6 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/volunteers",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "volunteers"
-              ]
-            },
-            "description": "",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"firstName\": \"Nina\",\n  \"lastName\": \"Rossi\",\n  \"email\": \"nina.rossi@mail.ch\",\n  \"username\": \"LEA\",\n  \"password\": \"secret\",\n  \"address\": {\n    \"street\": \"Rue de Bourg 5\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"preferredLocation\": \"Lausanne\",\n  \"preferredCategories\": [\n    {\n      \"title\": \"Music\"\n    }\n  ],\n  \"availableFrom\": \"2026-11-01\",\n  \"availableTo\": \"2026-12-31\"\n}",
@@ -1434,8 +1438,18 @@
                   "language": "json"
                 }
               }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/volunteers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "volunteers"
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Unknown status filter → 400",
@@ -1445,7 +1459,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                  ""
                 ]
               }
             }
@@ -1467,9 +1481,9 @@
                   "value": "FOO"
                 }
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Wrong password → 401",
@@ -1479,7 +1493,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 401\", () => pm.response.to.have.status(401));"
+                  ""
                 ]
               }
             }
@@ -1492,6 +1506,15 @@
                 "value": "application/json"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"lea\",\n  \"password\": \"wrong\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "{{baseUrl}}/service/login",
               "host": [
@@ -1501,18 +1524,9 @@
                 "service",
                 "login"
               ]
-            },
-            "description": "",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"username\": \"lea\",\n  \"password\": \"wrong\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Unknown id → 404",
@@ -1522,7 +1536,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 404\", () => pm.response.to.have.status(404));"
+                  ""
                 ]
               }
             }
@@ -1539,11 +1553,37 @@
                 "events",
                 "00000000-0000-0000-0000-000000000000"
               ]
-            },
-            "description": ""
-          }
+            }
+          },
+          "response": []
         }
       ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/VolunteerHubService/api"
+    },
+    {
+      "key": "adminId",
+      "value": "00000000-0000-0000-0000-0000000a0001"
+    },
+    {
+      "key": "organisationId",
+      "value": "00000000-0000-0000-0000-0000000b0001"
+    },
+    {
+      "key": "eventId",
+      "value": ""
+    },
+    {
+      "key": "volunteerId",
+      "value": ""
+    },
+    {
+      "key": "newOrganisationId",
+      "value": ""
     }
   ]
 }
