@@ -96,6 +96,7 @@ public class User {
      * The id and the account status are not copied: the id never changes and the status
      * can only be changed by an administrator.
      */
+
     public void replaceWith(User other) {
         if (other == null) {
             throw new IllegalArgumentException("User must not be null");
@@ -114,14 +115,24 @@ public class User {
                 ", username='" + this.username + "', email='" + this.email + "', status=" + this.status;
     }
 
+
+    /**
+     * Override to replace inhereted method from parent class (extending java class equals)
+     * Three methods to replace generic versions from Object class with one that uses our User fields
+     */
+
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + "{" + this.describe() + "}";
     }
 
+
+    /**
+     * Two users are equal if all  fields have same values (password ignored)
+     * Mostly used by the tests for now - hashCode below follow the same fields */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o) return true; // first.equals(second); first==second, True
         if (!(o instanceof User user)) return false;
         return Objects.equals(uuid, user.uuid)
                 && Objects.equals(firstName, user.firstName)
