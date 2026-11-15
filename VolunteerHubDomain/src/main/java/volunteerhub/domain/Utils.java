@@ -2,24 +2,20 @@ package volunteerhub.domain;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+/** utils is a class for things that don't necessarily fit in the other classes
+ * One method printMethodName() used in the tests to see the class.method being tested
+ * One class for password hashing and password checking*/
+
 public class Utils {
 
     public static void printMethodName() {
-        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-        var methodName = stackTraceElements[2].getMethodName();
-        var className = stackTraceElements[2].getClassName();
-        className = className.substring(className.lastIndexOf('.') + 1);
-        var method = className + "." + methodName;
-        printSeparator('-', method.length());
-        System.out.println(method);
-        printSeparator('-', method.length());
-    }
+    StackTraceElement caller = Thread.currentThread().getStackTrace()[2];
+        // get running thread, and gets the 2nd (3rd) chain of call in progress
+        // 0 = Thread.getStackTrace / 1= Utils.printMethodName / 2= volunteerhub.domain.UserTest.test....
+        // caller object now holds our class name and method name within the structure of StackTraceElement
 
-    public static void printSeparator(char c, int n) {
-        for (int i = 0; i < n; i++) {
-            System.out.print(c);
-        }
-        System.out.println();
+    System.out.println(caller.getClassName() + "." + caller.getMethodName());
+        // call getClassName() and getMethodName() on caller (defined in class StackTraceElement)
     }
 
     public static String hashPassword(String plainPassword) {
