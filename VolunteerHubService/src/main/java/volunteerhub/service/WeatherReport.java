@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Weather forecast for an event, as returned by GET /api/events/{id}/weather.
- */
+// answer of GET /events/{id}/weather
 public class WeatherReport {
 
     private UUID eventId;
@@ -29,7 +27,6 @@ public class WeatherReport {
     public List<Day> getDays() { return days; }
     public void setDays(List<Day> days) { this.days = days; }
 
-    /** Forecast for one day of the event. */
     public static class Day {
         private String date;
         private String description;

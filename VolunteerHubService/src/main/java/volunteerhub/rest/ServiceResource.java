@@ -8,15 +8,7 @@ import volunteerhub.service.LoginResult;
 
 import java.time.LocalDateTime;
 
-/**
- * Technical endpoints of the service.
- * <pre>
- * GET  /api/service/reset   reload the demo data (useful before a demo)
- * POST /api/service/login   check a username and a password, body {"username": "...", "password": "..."}
- * </pre>
- * The login uses POST so that the password travels in the body and not in the URL
- * (URLs end up in browser histories and server logs).
- */
+// login + reset of the demo data
 @Path("/service")
 public class ServiceResource {
 
@@ -31,6 +23,7 @@ public class ServiceResource {
         return "VolunteerHub service was reset at " + LocalDateTime.now().withNano(0);
     }
 
+    // POST and not GET so the password is in the body and not in the url
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -42,7 +35,6 @@ public class ServiceResource {
         return state.authenticate(credentials.getUsername(), credentials.getPassword());
     }
 
-    /** Body of the login request. */
     public static class Credentials {
         private String username;
         private String password;

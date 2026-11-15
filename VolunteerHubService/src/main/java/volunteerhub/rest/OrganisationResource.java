@@ -13,17 +13,7 @@ import volunteerhub.service.ApplicationState;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * CRUD of organisations (domain class 3).
- * <pre>
- * GET    /api/organisations              list
- * GET    /api/organisations/{id}         one organisation (with its events)
- * POST   /api/organisations              create an account
- * PUT    /api/organisations/{id}         update the profile
- * DELETE /api/organisations/{id}         delete the account and its events
- * GET    /api/organisations/{id}/events  events posted by the organisation
- * </pre>
- */
+// REST endpoints for organisations
 @Path("/organisations")
 @Produces(MediaType.APPLICATION_JSON)
 public class OrganisationResource {

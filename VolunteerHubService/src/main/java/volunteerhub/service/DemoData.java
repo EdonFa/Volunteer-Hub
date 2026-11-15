@@ -5,14 +5,9 @@ import volunteerhub.domain.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
-/**
- * Demo data loaded at start-up (and by GET /api/service/reset).
- * <p>
- * The ids are fixed so that the Postman collection always works, even after a restart.
- * The dates are relative to today, so the demo events are always in the near future
- * (and the weather forecast, which covers 16 days, is available for some of them).
- * All demo accounts use the password "password".
- */
+// demo data loaded at startup and with /service/reset
+// fixed ids so the postman requests always work, dates are relative to today
+// password is "password" for everyone
 final class DemoData {
 
     static final UUID ADMIN = id("a0001");
@@ -35,7 +30,7 @@ final class DemoData {
     static void populate(ApplicationState state) {
         var today = LocalDate.now();
 
-        // the categories listed in the project description
+        // categories from the project description
         var music = state.addCategory(new Category("Music", "Concerts, music festivals, and live performances."));
         var dance = state.addCategory(new Category("Dance", "Dance shows, festivals, and workshops."));
         var theatre = state.addCategory(new Category("Theatre", "Plays, street theatre, and stage productions."));
@@ -74,7 +69,7 @@ final class DemoData {
         state.importEvent(event(PHOTO_EXHIBITION, CINE_CLUB, "Photography Exhibition Opening",
                 "Welcome visitors during the opening of the exhibition.",
                 new Address("Avenue de la Gare 10", "1800", "Vevey"), today.minusDays(10), today.minusDays(8),
-                visualArts, 4, "https://cine-riviera.example.ch/expo"), EventStatus.PUBLISHED); // will become EXPIRED
+                visualArts, 4, "https://cine-riviera.example.ch/expo"), EventStatus.PUBLISHED); // in the past so it becomes EXPIRED
 
         var lea = new Volunteer(LEA, "Léa", "Martin", "lea.martin@mail.ch", "lea", PASSWORD,
                 new Address("Avenue de Cour 10", "1007", "Lausanne"));
@@ -97,7 +92,7 @@ final class DemoData {
         return new Event(id, organisationId, title, description, location, start, end, category, needed, link);
     }
 
-    /** Readable fixed ids, e.g. id("e0001") = 00000000-0000-0000-0000-0000000e0001 */
+    // id("e0001") -> 00000000-0000-0000-0000-0000000e0001
     private static UUID id(String suffix) {
         return UUID.fromString("00000000-0000-0000-0000-" + "0".repeat(12 - suffix.length()) + suffix);
     }

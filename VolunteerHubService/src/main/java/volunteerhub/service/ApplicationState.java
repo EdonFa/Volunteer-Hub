@@ -13,16 +13,12 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Stream;
 
-/**
- * The state of the whole application, kept in memory (Phase 3 will replace the maps by a database).
- * <p>
- * {@code @ApplicationScoped}: the server creates a single instance, shared by all the REST resources
- * through {@code @Inject}. The domain objects keep their own business rules (e.g. only a pending event
- * can be accepted); this class adds the rules that need a view on all the objects at once (unique
- * usernames, existing categories, removing an event everywhere it is referenced...).
- * <p>
- * Methods are {@code synchronized} because the server handles several HTTP requests in parallel.
- */
+// all the data of the app, kept in memory in maps (database in phase 3)
+// only one instance (@ApplicationScoped) shared by all resources with @Inject
+// the rules that need all the objects are here (unique username, category exists etc),
+// the rules on one object stay in the domain
+// synchronized because several requests can come at the same time
+
 @ApplicationScoped
 public class ApplicationState {
 
@@ -30,9 +26,9 @@ public class ApplicationState {
     private Map<UUID, Volunteer> volunteers;
     private Map<UUID, Administrator> administrators;
     private Map<UUID, Event> events;
-    private Map<String, UUID> usernames;          // username (lower case) -> user id, for uniqueness and login
-    private Map<String, UUID> organisationNames;  // organisation name (lower case) -> organisation id
-    private Map<String, Category> categories;     // category title (lower case) -> the official category
+    private Map<String, UUID> usernames;          // username in lower case -> id
+    private Map<String, UUID> organisationNames;  // same for organisation names
+    private Map<String, Category> categories;     // title in lower case -> category
 
     @PostConstruct
     public synchronized void init() {
@@ -45,8 +41,6 @@ public class ApplicationState {
         categories = new LinkedHashMap<>();
         DemoData.populate(this);
     }
-
-    // =====================================================================================  categories
 
     public synchronized List<Category> getCategories() {
         return new ArrayList<>(categories.values());
@@ -65,10 +59,7 @@ public class ApplicationState {
         return clean;
     }
 
-    /**
-     * Replaces a category received in JSON by the official object of the catalogue, so that "music",
-     * "Music " and "Music" all point to the same category, and unknown categories are rejected.
-     */
+    // takes the category from our list so "music" and "Music " are the same, 400 if unknown
     private Category officialCategory(Category category) {
         if (category == null || isBlank(category.getTitle())) {
             throw new IllegalArgumentException("A category is required");
@@ -81,12 +72,7 @@ public class ApplicationState {
         return official;
     }
 
-    // =====================================================================================  users (common)
-
-    /**
-     * Common checks when creating any account: a unique username, a password (stored hashed with BCrypt),
-     * and an active account.
-     */
+    // checks for every new account: unique username, password hashed with BCrypt, status ACTIVE
     private void registerUser(User user) {
         if (user == null) {
             throw new IllegalArgumentException("The request body is empty");
@@ -111,10 +97,7 @@ public class ApplicationState {
         usernames.put(key(user.getUsername()), id);
     }
 
-    /**
-     * Prepares the data received for a PUT on an existing account: checks that a new username is free,
-     * and hashes a new password (an empty password, or the hash sent back unchanged, keeps the old one).
-     */
+    // for a PUT: new username must be free, empty password = keep the old one
     private void prepareUserUpdate(User existing, User update) {
         if (update == null) {
             throw new IllegalArgumentException("The request body is empty");
@@ -129,13 +112,13 @@ public class ApplicationState {
         }
         var password = update.getPassword();
         if (isBlank(password) || password.equals(existing.getPassword())) {
-            update.setPassword(null); // replaceWith keeps the current password
+            update.setPassword(null); // null -> replaceWith keeps the old password
         } else {
             update.setPassword(Utils.hashPassword(password));
         }
     }
 
-    /** First name, last name and email are part of every account (project description, section 1). */
+    // first name, last name and email are mandatory
     private static void checkProfile(User user) {
         if (isBlank(user.getFirstName()) || isBlank(user.getLastName())) {
             throw new IllegalArgumentException("A first name and a last name are required");
@@ -168,8 +151,6 @@ public class ApplicationState {
         return new LoginResult(user.getUUID(), user.getClass().getSimpleName().toUpperCase(), user.getFullName());
     }
 
-    // =====================================================================================  volunteers
-
     public synchronized List<Volunteer> getAllVolunteers() {
         return new ArrayList<>(volunteers.values());
     }
@@ -181,7 +162,7 @@ public class ApplicationState {
     public synchronized Volunteer addVolunteer(Volunteer volunteer) {
         registerUser(volunteer);
         volunteer.setPreferredCategories(officialCategories(volunteer.getPreferredCategories()));
-        volunteer.setSavedEvents(null); // saved events are added with the "save event" action only
+        volunteer.setSavedEvents(null); // saved events only with the save action
         volunteers.put(volunteer.getUUID(), volunteer);
         return volunteer;
     }
@@ -218,10 +199,7 @@ public class ApplicationState {
         return volunteer;
     }
 
-    /**
-     * Published events that match the preferences of a volunteer: preferred categories, preferred
-     * location (city) and availability period. A preference that is not set does not filter anything.
-     */
+    // published events that match the preferences, if a preference is empty we don't filter on it
     public synchronized List<Event> recommendationsFor(UUID volunteerId) {
         var volunteer = getVolunteer(volunteerId);
         var preferred = volunteer.getPreferredCategories();
@@ -240,8 +218,6 @@ public class ApplicationState {
     private List<Category> officialCategories(List<Category> list) {
         return list.stream().map(this::officialCategory).toList();
     }
-
-    // =====================================================================================  organisations
 
     public synchronized List<Organisation> getAllOrganisations() {
         return new ArrayList<>(organisations.values());
@@ -262,7 +238,7 @@ public class ApplicationState {
             throw conflict("The organisation '" + organisation.getOrganisationName() + "' already exists");
         }
         registerUser(organisation);
-        organisation.setEvents(null); // events are posted with POST /events
+        organisation.setEvents(null); // events are added with POST /events
         organisations.put(organisation.getUUID(), organisation);
         organisationNames.put(key(organisation.getOrganisationName()), organisation.getUUID());
         return organisation;
@@ -287,9 +263,7 @@ public class ApplicationState {
         return organisation;
     }
 
-    /**
-     * Removing an organisation also removes all its events (and the volunteers' bookmarks on them).
-     */
+    // deletes its events too
     public synchronized void removeOrganisation(UUID id) {
         var organisation = getOrganisation(id);
         organisation.getEvents().forEach(this::forgetEvent);
@@ -304,12 +278,7 @@ public class ApplicationState {
         return organisation.getEvents();
     }
 
-    // =====================================================================================  events
-
-    /**
-     * All events, optionally filtered. Every filter is optional (null = no filter).
-     * Expired events are detected here, each time the list is read.
-     */
+    // every filter is optional, expired events are updated here
     public synchronized List<Event> getEvents(EventStatus status, String category, String city,
                                               LocalDate from, LocalDate to) {
         if ((from == null) != (to == null)) {
@@ -330,10 +299,7 @@ public class ApplicationState {
         return event;
     }
 
-    /**
-     * An organisation posts a new event: it gets a new id and stays PENDING until an administrator
-     * accepts or refuses it.
-     */
+    // new event -> PENDING until an admin accepts it
     public synchronized Event addEvent(Event event) {
         checkEventData(event);
         if (event.getOrganisationId() == null) {
@@ -348,14 +314,12 @@ public class ApplicationState {
         }
         event.setEventId(UUID.randomUUID());
         event.setCategory(officialCategory(event.getCategory()));
-        organisation.addEvent(event); // domain rule: the event becomes PENDING
+        organisation.addEvent(event);
         events.put(event.getEventId(), event);
         return event;
     }
 
-    /**
-     * Edits an event: the domain sets it back to PENDING, so an administrator must validate it again.
-     */
+    // after an edit the event goes back to PENDING
     public synchronized Event updateEvent(UUID id, Event update) {
         var event = getEvent(id);
         checkEventData(update);
@@ -401,7 +365,7 @@ public class ApplicationState {
         return getOrganisation(event.getOrganisationId());
     }
 
-    /** Removes an event from the index and from the bookmarks of all volunteers. */
+    // removes the event everywhere, also from the saved events of the volunteers
     private void forgetEvent(Event event) {
         volunteers.values().forEach(v -> v.removeSavedEvent(event));
         events.remove(event.getEventId());
@@ -411,8 +375,6 @@ public class ApplicationState {
         events.values().forEach(Event::expireIfPast);
         return events.values().stream().filter(e -> e.getStatus() == EventStatus.PUBLISHED);
     }
-
-    // =====================================================================================  administrators
 
     public synchronized List<Administrator> getAllAdministrators() {
         return new ArrayList<>(administrators.values());
@@ -424,7 +386,7 @@ public class ApplicationState {
 
     public synchronized Event acceptEvent(UUID adminId, UUID eventId) {
         var event = getEvent(eventId);
-        getAdministrator(adminId).acceptEvent(event); // domain rule: only a PENDING event
+        getAdministrator(adminId).acceptEvent(event); // the domain checks that it's PENDING
         return event;
     }
 
@@ -454,7 +416,7 @@ public class ApplicationState {
         return user;
     }
 
-    /** "Remove an account" from the project description: needs the list of all users, so it lives here. */
+    // needs all the users so it's here and not in the domain
     public synchronized void removeAccount(UUID adminId, UUID userId) {
         getAdministrator(adminId);
         var user = getManagedUser(userId);
@@ -465,7 +427,7 @@ public class ApplicationState {
         }
     }
 
-    /** Administrators manage the accounts of organisations and volunteers (not of other administrators). */
+    // an admin can't suspend or delete another admin
     private User getManagedUser(UUID userId) {
         if (administrators.containsKey(userId)) {
             throw new ForbiddenException("An administrator account cannot be managed through this action");
@@ -473,18 +435,13 @@ public class ApplicationState {
         return orNotFound(findUser(userId), "user", userId);
     }
 
-    // =====================================================================================  demo data access
-
-    /** Used by {@link DemoData} to register administrators, which cannot be created through the API. */
+    // only for DemoData
     void addAdministrator(Administrator administrator) {
         registerUser(administrator);
         administrators.put(administrator.getUUID(), administrator);
     }
 
-    /**
-     * Used by {@link DemoData} to load events with a fixed id and a given status (also past events, to
-     * show the EXPIRED status), which the public addEvent does not allow.
-     */
+    // only for DemoData: fixed id and status, also past events
     void importEvent(Event event, EventStatus status) {
         checkEventData(event);
         event.setCategory(officialCategory(event.getCategory()));
@@ -492,8 +449,6 @@ public class ApplicationState {
         event.setStatus(status);
         events.put(event.getEventId(), event);
     }
-
-    // =====================================================================================  helpers
 
     private static String key(String text) {
         return text.trim().toLowerCase();

@@ -16,21 +16,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-/**
- * External API (extra functionality): weather forecast for the city and the dates of an event,
- * from Open-Meteo (https://open-meteo.com, free, no API key).
- * <p>
- * Here our service is itself the <i>client</i> of two other web services, using the JAX-RS client API
- * seen in the course (ClientBuilder / WebTarget):
- * 1. the geocoding API turns the city of the event into latitude / longitude,
- * 2. the forecast API returns the daily forecast for those coordinates.
- */
+// calls the Open-Meteo API (free, no key needed) with the JAX-RS client
+// 1st call: city -> latitude/longitude, 2nd call: forecast for the dates of the event
 @ApplicationScoped
 public class WeatherService {
 
     private static final String GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search";
     private static final String FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
-    private static final int FORECAST_DAYS = 16; // Open-Meteo forecasts at most 16 days ahead
+    private static final int FORECAST_DAYS = 16; // open-meteo only goes 16 days ahead
 
     public WeatherReport forecastFor(Event event) {
         var report = new WeatherReport();
@@ -39,7 +32,7 @@ public class WeatherService {
         var city = event.getLocation().getCity();
         report.setCity(city);
 
-        // only the days of the event that are inside the forecast window
+        // keep only the days inside the 16 days
         var today = LocalDate.now();
         var first = event.getStartDate().isBefore(today) ? today : event.getStartDate();
         var last = event.getEndDate().isAfter(today.plusDays(FORECAST_DAYS - 1))
@@ -101,7 +94,7 @@ public class WeatherService {
             report.setMessage("Forecast by Open-Meteo.com");
             return report;
         } catch (ProcessingException | WebApplicationException | ClassCastException | NullPointerException e) {
-            // the external service is down, slow or answered something unexpected: 502 Bad Gateway
+            // api down or weird answer -> 502 Bad Gateway
             throw new WebApplicationException("The weather service is not available right now ("
                     + e.getMessage() + ")", Response.Status.BAD_GATEWAY);
         } finally {
@@ -115,7 +108,7 @@ public class WeatherService {
         }
     }
 
-    /** WMO weather codes used by Open-Meteo, grouped into readable descriptions. */
+    // weather codes -> text
     private static String describe(int code) {
         if (code == 0) return "Clear sky";
         if (code <= 3) return "Partly cloudy";

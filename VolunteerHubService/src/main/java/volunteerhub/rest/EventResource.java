@@ -18,18 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * CRUD of events (domain class 1) + event actions.
- * <pre>
- * GET    /api/events                      list (filters: ?status=&category=&city=&from=&to=)
- * GET    /api/events/{id}                 one event
- * POST   /api/events                      an organisation posts an event (organisationId in the body) -> PENDING
- * PUT    /api/events/{id}                 edit an event -> back to PENDING
- * DELETE /api/events/{id}                 delete an event
- * PUT    /api/events/{id}/close           close the recruitment (PUBLISHED -> CLOSED)
- * GET    /api/events/{id}/weather         weather forecast (external API)
- * </pre>
- */
+// REST endpoints for events: CRUD, close recruitment and weather
 @Path("/events")
 @Produces(MediaType.APPLICATION_JSON)
 public class EventResource {
@@ -59,7 +48,7 @@ public class EventResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addEvent(Event event, @Context UriInfo uriInfo) {
         var created = state.addEvent(event);
-        // 201 Created + a Location header with the URI of the new event
+        // 201 + link to the new event in the Location header
         var location = uriInfo.getAbsolutePathBuilder().path(created.getEventId().toString()).build();
         return Response.created(location).entity(created).build();
     }
@@ -75,7 +64,7 @@ public class EventResource {
     @Path("/{id}")
     public Response removeEvent(@PathParam("id") UUID id) {
         state.removeEvent(id);
-        return Response.noContent().build(); // 204: done, nothing to return
+        return Response.noContent().build(); // 204, nothing to send back
     }
 
     @PUT
@@ -90,6 +79,7 @@ public class EventResource {
         return weather.forecastFor(state.getEvent(id));
     }
 
+    // ?status=published -> EventStatus.PUBLISHED, 400 if it doesn't exist
     private static EventStatus parseStatus(String status) {
         if (status == null || status.isBlank()) {
             return null;

@@ -2,10 +2,7 @@ package volunteerhub.rest;
 
 import jakarta.ws.rs.core.Response;
 
-/**
- * JSON body of an error response, e.g.
- * {"status": 409, "error": "Conflict", "message": "The username 'lea' is already taken"}
- */
+// json we send back when something goes wrong, ex: {"status":409,"error":"Conflict","message":"..."}
 public class ErrorDescription {
 
     private int status;

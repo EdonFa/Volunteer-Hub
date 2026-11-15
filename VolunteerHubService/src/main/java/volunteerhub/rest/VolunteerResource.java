@@ -13,20 +13,7 @@ import volunteerhub.service.ApplicationState;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * CRUD of volunteers (domain class 2) + volunteer actions.
- * <pre>
- * GET    /api/volunteers                                list
- * GET    /api/volunteers/{id}                           one volunteer
- * POST   /api/volunteers                                create an account
- * PUT    /api/volunteers/{id}                           update profile and preferences
- * DELETE /api/volunteers/{id}                           delete the account
- * GET    /api/volunteers/{id}/saved-events              saved events
- * PUT    /api/volunteers/{id}/saved-events/{eventId}    save an event
- * DELETE /api/volunteers/{id}/saved-events/{eventId}    remove a saved event
- * GET    /api/volunteers/{id}/recommendations           published events matching the preferences
- * </pre>
- */
+// REST endpoints for volunteers + saved events and recommendations
 @Path("/volunteers")
 @Produces(MediaType.APPLICATION_JSON)
 public class VolunteerResource {
