@@ -12,20 +12,8 @@ import volunteerhub.service.ApplicationState;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Moderation actions of an administrator (the {adminId} says which administrator performs the action).
- * Administrator accounts are not created through the API: they come with the application.
- * <pre>
- * GET    /api/administrators                                   list
- * GET    /api/administrators/{adminId}                         one administrator
- * PUT    /api/administrators/{adminId}/events/{eventId}/accept accept a pending event -> PUBLISHED
- * PUT    /api/administrators/{adminId}/events/{eventId}/refuse refuse a pending event -> REFUSED
- * DELETE /api/administrators/{adminId}/events/{eventId}        remove an event
- * PUT    /api/administrators/{adminId}/users/{userId}/suspend    suspend an account
- * PUT    /api/administrators/{adminId}/users/{userId}/reactivate reactivate an account
- * DELETE /api/administrators/{adminId}/users/{userId}            remove an account
- * </pre>
- */
+// actions of the admin on events and accounts
+// admins can't be created with the API, they come from DemoData
 @Path("/administrators")
 @Produces(MediaType.APPLICATION_JSON)
 public class AdministratorResource {

@@ -11,13 +11,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-/**
- * Configures how JSON-B converts our objects to JSON.
- * <p>
- * Passwords are never sent back to the client: the getter getPassword() is hidden from JSON-B, so a
- * password can still be <i>received</i> (setPassword, e.g. when creating an account) but never
- * <i>sent</i>. This keeps the domain model free of any web annotation.
- */
+// hides getPassword() so the password hash is never sent in the json
 @Provider
 public class JsonbConfiguration implements ContextResolver<Jsonb> {
 

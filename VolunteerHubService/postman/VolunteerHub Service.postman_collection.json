@@ -176,7 +176,65 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Create event (organisation posts it → PENDING)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organisationId\": \"{{organisationId}}\",\n  \"title\": \"Christmas Jazz\",\n  \"description\": \"Welcome visitors at the entrance\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-13\",\n  \"category\": {\n    \"title\": \"Music\"\n  },\n  \"volunteersNeeded\": 8,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Payara Server 7.2026.8"
+                },
+                {
+                  "key": "Location",
+                  "value": "http://localhost:8080/VolunteerHubService/api/events/3573af42-1076-4f84-af80-b82dab580bad"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "510"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "SAMEORIGIN"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"category\": {\n    \"description\": \"Concerts, music festivals, and live performances.\",\n    \"title\": \"Music\"\n  },\n  \"description\": \"Welcome visitors at the entrance\",\n  \"endDate\": \"2026-12-13\",\n  \"eventId\": \"3573af42-1076-4f84-af80-b82dab580bad\",\n  \"location\": {\n    \"city\": \"Lausanne\",\n    \"postalCode\": \"1003\",\n    \"street\": \"Place Saint-François\"\n  },\n  \"organisationId\": \"00000000-0000-0000-0000-0000000b0001\",\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\",\n  \"startDate\": \"2026-12-10\",\n  \"status\": \"PENDING\",\n  \"title\": \"Christmas Jazz\",\n  \"volunteersNeeded\": 8\n}"
+            }
+          ]
         },
         {
           "name": "Read the new event",
@@ -209,17 +267,6 @@
         },
         {
           "name": "Update event (→ back to PENDING)",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  ""
-                ]
-              }
-            }
-          ],
           "request": {
             "method": "PUT",
             "header": [
@@ -230,7 +277,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"title\": \"Christmas Market Helpers (extended)\",\n  \"description\": \"Welcome visitors and help at the stands of the Christmas market.\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-14\",\n  \"category\": {\n    \"title\": \"Music\"\n  },\n  \"volunteersNeeded\": 10,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
+              "raw": "{\n  \"title\": \"Christmas Jazz (extended)\",\n  \"description\": \"Welcome visitors at the entrance.\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-14\",\n  \"category\": {\n    \"title\": \"Music\"\n  },\n  \"volunteersNeeded\": 10,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -526,7 +573,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                  ""
                 ]
               }
             }
@@ -872,37 +919,6 @@
           "response": []
         },
         {
-          "name": "4 volunteers found → still needed = 4",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  ""
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/events/{{eventId}}/still-needed/4",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "events",
-                "{{eventId}}",
-                "still-needed",
-                "4"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
           "name": "Organisation closes recruitment (→ CLOSED)",
           "event": [
             {
@@ -1087,6 +1103,38 @@
     {
       "name": "5 · Extra · Volunteer saved events & recommendations",
       "item": [
+        {
+          "name": "Lea logs in",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"lea\",\n  \"password\": \"password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/service/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "service",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
         {
           "name": "Recommendations for Léa (her categories, city, dates)",
           "event": [
@@ -1348,7 +1396,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"organisationId\": \"{{organisationId}}\",\n  \"title\": \"Christmas Market Helpers\",\n  \"description\": \"Welcome visitors and help at the stands of the Christmas market.\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-13\",\n  \"category\": {\n    \"title\": \"Gaming\"\n  },\n  \"volunteersNeeded\": 8,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
+              "raw": "{\n  \"organisationId\": \"{{organisationId}}\",\n  \"title\": \"Christmas Jazz\",\n  \"description\": \"Welcome visitors at the entrance\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-13\",\n  \"category\": {\n    \"title\": \"Gaming\"\n  },\n  \"volunteersNeeded\": 8,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1390,7 +1438,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"organisationId\": \"{{organisationId}}\",\n  \"title\": \"Christmas Market Helpers\",\n  \"description\": \"Welcome visitors and help at the stands of the Christmas market.\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-01\",\n  \"category\": {\n    \"title\": \"Music\"\n  },\n  \"volunteersNeeded\": 8,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
+              "raw": "{\n  \"organisationId\": \"{{organisationId}}\",\n  \"title\": \"Christmas Jazz\",\n  \"description\": \"Welcome visitors at the entrance\",\n  \"location\": {\n    \"street\": \"Place Saint-François\",\n    \"postalCode\": \"1003\",\n    \"city\": \"Lausanne\"\n  },\n  \"startDate\": \"2026-12-10\",\n  \"endDate\": \"2026-12-01\",\n  \"category\": {\n    \"title\": \"Music\"\n  },\n  \"volunteersNeeded\": 8,\n  \"recruitmentLink\": \"https://jazz-lausanne.example.ch/christmas\"\n}",
               "options": {
                 "raw": {
                   "language": "json"

@@ -2,10 +2,7 @@ package volunteerhub.service;
 
 import java.util.UUID;
 
-/**
- * What the service answers after a successful login: who the user is and which role they have
- * (ORGANISATION, VOLUNTEER or ADMINISTRATOR), so that the web frontend (Phase 2) can show the right pages.
- */
+// answer of the login: id, role and name (the frontend will use the role in phase 2)
 public class LoginResult {
 
     private UUID id;

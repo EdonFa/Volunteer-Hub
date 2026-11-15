@@ -9,17 +9,8 @@ import jakarta.ws.rs.ext.Provider;
 
 import java.util.logging.Logger;
 
-/**
- * Turns every Java exception into an HTTP response with the right status code and a JSON body,
- * instead of an HTML error page:
- * <ul>
- *   <li>IllegalArgumentException (invalid data, from the domain or the service) -> 400 Bad Request</li>
- *   <li>IllegalStateException (action not allowed in the current state, e.g. accept a published event) -> 409 Conflict</li>
- *   <li>JAX-RS exceptions (NotFoundException 404, ForbiddenException 403, ...) -> their own status</li>
- *   <li>invalid JSON -> 400 Bad Request</li>
- *   <li>anything else -> 500 Internal Server Error</li>
- * </ul>
- */
+// catches every exception and sends back a json error with the right status code
+// IllegalArgumentException -> 400, IllegalStateException -> 409, NotFound -> 404, other -> 500
 @Provider
 public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
 
@@ -30,8 +21,8 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
         if (exception instanceof WebApplicationException wae && !(wae.getCause() != null && isClientError(wae.getCause()))) {
             return build(wae.getResponse().getStatus(), exception.getMessage());
         }
-        // the cause chain matters: a domain setter that throws while JSON-B reads the body arrives
-        // wrapped in a JsonbException; the domain message is the most useful one, so look for it first
+        // JSON-B wraps the exceptions thrown by the domain setters, so we look in the causes
+        // to find the real message
         for (Throwable t = exception; t != null; t = t.getCause()) {
             if (t instanceof IllegalArgumentException) {
                 return build(400, t.getMessage());

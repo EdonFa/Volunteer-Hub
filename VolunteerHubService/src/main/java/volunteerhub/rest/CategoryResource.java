@@ -9,14 +9,7 @@ import volunteerhub.service.ApplicationState;
 
 import java.util.List;
 
-/**
- * Catalogue of the categories offered by the application.
- * Events and volunteer preferences can only use categories from this catalogue.
- * <pre>
- * GET  /api/categories   list
- * POST /api/categories   add a category
- * </pre>
- */
+// the list of categories, events can only use a category from this list
 @Path("/categories")
 @Produces(MediaType.APPLICATION_JSON)
 public class CategoryResource {
