@@ -16,6 +16,8 @@ public class Volunteer extends User {
     private Set<Category> preferredCategories;
     private Set<Event> savedEvents;
 
+
+
     public Volunteer() {
         this(null, null, null, null, null, null, null);
     }
@@ -33,10 +35,11 @@ public class Volunteer extends User {
         this.savedEvents = new LinkedHashSet<>();
     }
 
+
+
     public Address getAddress() {
         return address;
     }
-
     public void setAddress(Address address) {
         this.address = address;
     }
@@ -44,7 +47,6 @@ public class Volunteer extends User {
     public String getPreferredLocation() {
         return preferredLocation;
     }
-
     public void setPreferredLocation(String preferredLocation) {
         this.preferredLocation = preferredLocation;
     }
@@ -52,7 +54,6 @@ public class Volunteer extends User {
     public LocalDate getAvailableFrom() {
         return availableFrom;
     }
-
     public LocalDate getAvailableTo() {
         return availableTo;
     }
@@ -61,7 +62,6 @@ public class Volunteer extends User {
     public void setAvailableFrom(LocalDate from) {
         setAvailability(from, this.availableTo);
     }
-
     public void setAvailableTo(LocalDate to) {
         setAvailability(this.availableFrom, to);
     }
@@ -77,7 +77,6 @@ public class Volunteer extends User {
     public List<Category> getPreferredCategories() {
         return new ArrayList<>(preferredCategories);
     }
-
     public void addPreferredCategory(Category category) {
         if (category == null) {
             throw new IllegalArgumentException("Category must not be null");

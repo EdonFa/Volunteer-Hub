@@ -180,6 +180,7 @@ public class Event {
      * different new events are never mixed up. The service gives an event its id before putting it
      * in any collection, so its hashCode never changes while it is inside a HashSet or a HashMap.
      */
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
