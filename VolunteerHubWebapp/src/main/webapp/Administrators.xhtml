@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head><title>Administrators</title></h:head>
+<h:body>
+    <p:dataTable value="#{administratorBean.administrators}" var="admin">
+        <p:column headerText="Name">#{admin.fullName}</p:column>
+        <p:column headerText="Email">#{admin.email}</p:column>
+        <p:column headerText="Username">#{admin.username}</p:column>
+    </p:dataTable>
+</h:body>
+</html>
