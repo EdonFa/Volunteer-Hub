@@ -88,16 +88,15 @@ The service is coded in `src/main/java/volunteerhub` and runs on Payara 7.2026.8
 ## Running the service
 
 1. Install the domain: Maven tab, `VolunteerHubDomain`, Lifecycle, `clean` then `install`. Do it again after every change in the domain.
-2. Package the service: Maven tab, `VolunteerHubService`, Lifecycle, `clean` then `package`. If the service is not in the Maven tab, right-click `VolunteerHubService/pom.xml` and choose **Add as Maven Project**.
-3. Start it with Docker, from the `VolunteerHubService` folder:
+2. Package the service and the web app: Maven tab, `VolunteerHubService` then `VolunteerHubWebapp`, Lifecycle, `clean` then `package`. If a project is not in the Maven tab, right-click its `pom.xml` and choose **Add as Maven Project**.
+3. Start Payara with Docker, from the repository root (where `docker-compose.yml` is):
    ```
-   docker build -t volunteerhub-service .
-   docker run --rm --name volunteerhub -p 8080:8080 volunteerhub-service
+   docker compose up -d
    ```
-   http://localhost:8080/VolunteerHubService/ shows "VolunteerHubService Successfully Deployed" after about 10 s.
+   The service is at `http://localhost:8080/VolunteerHubService/` and the web app at `http://localhost:8080/VolunteerHubWebapp-1.0-SNAPSHOT/`. Stop it with `docker compose down`.
 4. In Postman: Import the collection, run `0 · Setup / Reset demo data`, then the folders in order.
 
-The course method also works (How-to 3.4): copy `target/VolunteerHubService.war` into the `deployments` folder of `StudyBuddyDocker` and run `docker compose up -d` there, or deploy from IntelliJ with a Payara Server Remote run configuration. Only one Payara at a time, both use port 8080.
+You can also deploy from IntelliJ with a Payara Server Remote run configuration (How-to 3.4, steps 7 to 13): admin port 4848, user `admin`, password `admin`. Only one Payara can run at a time, because they all use port 8080.
 
 ## Things to know about the code
 
