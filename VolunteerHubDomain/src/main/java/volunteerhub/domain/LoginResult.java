@@ -1,4 +1,4 @@
-package volunteerhub.service;
+package volunteerhub.domain;
 
 import java.util.UUID;
 

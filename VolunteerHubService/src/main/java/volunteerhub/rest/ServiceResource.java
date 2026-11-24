@@ -4,7 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import volunteerhub.service.ApplicationState;
-import volunteerhub.service.LoginResult;
+import volunteerhub.domain.LoginResult;
 
 import java.time.LocalDateTime;
 

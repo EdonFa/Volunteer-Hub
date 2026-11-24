@@ -10,6 +10,7 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import volunteerhub.domain.Event;
+import volunteerhub.domain.WeatherReport;
 
 import java.io.StringReader;
 import java.time.LocalDate;

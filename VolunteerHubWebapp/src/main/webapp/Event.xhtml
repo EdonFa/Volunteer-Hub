@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces"
+                template="/templates/MainTemplate.xhtml">
+    <ui:define name="title">VolunteerHub - Event</ui:define>
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="id" value="#{eventBean.id}"/>
+            <f:viewAction action="#{eventBean.load}"/>
+        </f:metadata>
+
+        <h:link outcome="Home" value="Back to events" styleClass="vh-btn vh-btn-outline"/>
+
+        <div class="vh-event-page">
+            <div class="vh-card">
+                <h2 class="vh-event-title">#{eventBean.event.title}</h2>
+                <p:tag value="#{eventBean.event.category.title}" styleClass="vh-tag"/>
+                <p>#{eventBean.event.description}</p>
+            </div>
+            <div class="vh-card">
+                <div class="vh-section-label">Organisation</div>
+                <div>#{eventBean.organisation.organisationName}</div>
+                <div class="vh-section-label">Location</div>
+                <div>#{eventBean.event.location.street}, #{eventBean.event.location.postalCode} #{eventBean.event.location.city}</div>
+                <div class="vh-section-label">Dates</div>
+                <div>#{eventBean.event.startDate} - #{eventBean.event.endDate}</div>
+                <div class="vh-section-label">Volunteers needed</div>
+                <div>#{eventBean.event.volunteersNeeded}</div>
+                <br/>
+                <p:linkButton value="Apply on organiser's website"
+                              href="#{eventBean.event.recruitmentLink}" target="_blank"/>
+            </div>
+        </div>
+
+        <div class="vh-card vh-weather">
+            <div class="vh-section-label">Weather forecast</div>
+            <h:panelGroup rendered="#{eventBean.weather != null and eventBean.weather.available}">
+                <p:dataTable value="#{eventBean.weather.days}" var="d" styleClass="vh-table">
+                    <p:column headerText="Date">#{d.date}</p:column>
+                    <p:column headerText="Sky">#{d.description}</p:column>
+                    <p:column headerText="Min / Max">#{d.temperatureMin} / #{d.temperatureMax} °C</p:column>
+                    <p:column headerText="Rain">#{d.precipitationProbability} %</p:column>
+                </p:dataTable>
+                <div class="vh-meta">#{eventBean.weather.message}</div>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{eventBean.weather == null or not eventBean.weather.available}">
+                <div class="vh-meta">
+                    #{eventBean.weather != null ? eventBean.weather.message : 'Weather is not available right now.'}
+                </div>
+            </h:panelGroup>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

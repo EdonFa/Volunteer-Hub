@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces"
+                template="/templates/MainTemplate.xhtml">
+    <ui:define name="title">VolunteerHub - Home</ui:define>
+    <ui:define name="content">
+        <h:form id="homeForm">
+            <div class="vh-card vh-filters">
+                <p:selectOneMenu value="#{homeBean.category}">
+                    <f:selectItem itemLabel="All categories" itemValue=""/>
+                    <f:selectItems value="#{appData.categories}" var="c"
+                                   itemLabel="#{c.title}" itemValue="#{c.title}"/>
+                </p:selectOneMenu>
+                <p:inputText value="#{homeBean.city}" placeholder="City"/>
+                <p:commandButton value="Search" action="#{homeBean.search}" update="homeForm"/>
+                <p:commandButton value="Reset" action="#{homeBean.reset}" update="homeForm"
+                                 styleClass="ui-button-outlined"/>
+            </div>
+
+            <ui:repeat value="#{homeBean.events}" var="e">
+                <div class="vh-card vh-event">
+                    <div>
+                        <div class="vh-event-title">#{e.title}</div>
+                        <div class="vh-meta">
+                            <p:tag value="#{e.category.title}" styleClass="vh-tag"/>
+                            #{e.location.city} |
+                            <h:outputText value="#{e.startDate}">
+                                <f:convertDateTime type="localDate" pattern="dd.MM.yyyy"/>
+                            </h:outputText>
+                            -
+                            <h:outputText value="#{e.endDate}">
+                                <f:convertDateTime type="localDate" pattern="dd.MM.yyyy"/>
+                            </h:outputText>
+                        </div>
+                        <div class="vh-meta">#{e.volunteersNeeded} volunteers needed</div>
+                    </div>
+                    <div class="vh-event-actions">
+                        <h:link outcome="Event" value="View" styleClass="vh-btn">
+                            <f:param name="id" value="#{e.eventId}"/>
+                        </h:link>
+                    </div>
+                </div>
+            </ui:repeat>
+
+            <h:panelGroup rendered="#{empty homeBean.events}">
+                <div class="vh-card">No events match these filters.</div>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -15,3 +15,22 @@ body { margin: 0; background: #F1EEE6; color: #2B2B2B;
 
 .vh-card { background: #FAF8F4; border: 1px solid #D9D4C7; border-radius: 8px;
     padding: 16px 20px; margin-bottom: 12px; }
+
+.vh-event { display: flex; justify-content: space-between; align-items: center; }
+.vh-event-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 4px; }
+.vh-meta { color: #6B6B6B; font-size: 0.9rem; }
+.vh-event-actions { display: flex; gap: 8px; }
+
+.vh-filters { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+.ui-button { background: #1F6B75 !important; border-color: #1F6B75 !important; color: #fff !important; }
+.ui-button.ui-button-outlined { background: #fff !important; color: #1F6B75 !important; }
+
+.vh-tag.ui-tag { background: #DCE8EC; color: #1F6B75; font-weight: 600;
+    border-radius: 12px; margin-right: 6px; }
+
+.vh-event-page { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-top: 16px; }
+.vh-section-label { color: #1F6B75; font-size: 0.8rem; font-weight: 600;
+    text-transform: uppercase; margin-top: 10px; }
+
+.vh-weather { margin-top: 16px; }

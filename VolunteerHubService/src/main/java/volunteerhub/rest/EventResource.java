@@ -9,7 +9,7 @@ import jakarta.ws.rs.core.UriInfo;
 import volunteerhub.domain.Event;
 import volunteerhub.domain.EventStatus;
 import volunteerhub.service.ApplicationState;
-import volunteerhub.service.WeatherReport;
+import volunteerhub.domain.WeatherReport;
 import volunteerhub.service.WeatherService;
 
 import java.time.LocalDate;
