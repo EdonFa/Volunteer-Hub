@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets">
+<h:head>
+    <title><ui:insert name="title">VolunteerHub</ui:insert></title>
+    <h:outputStylesheet name="css/styles.css"/>
+</h:head>
+<h:body>
+    <header class="vh-header">
+        <h:link outcome="Home" styleClass="vh-logo" value="VolunteerHub"/>
+        <div class="vh-header-buttons">
+            <ui:insert name="header-buttons">
+                <a href="#" class="vh-btn vh-btn-outline">Log in</a>
+                <a href="#" class="vh-btn">Sign up</a>
+            </ui:insert>
+        </div>
+    </header>
+    <main class="vh-container">
+        <ui:insert name="content"/>
+    </main>
+</h:body>
+</html>

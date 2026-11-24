@@ -1,0 +1,17 @@
+body { margin: 0; background: #F1EEE6; color: #2B2B2B;
+    font-family: "Segoe UI", Arial, sans-serif; }
+
+.vh-header { display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 32px; background: #FAF8F4; border-bottom: 1px solid #D9D4C7; }
+.vh-logo { color: #1F6B75; font-size: 1.5rem; font-weight: 700; text-decoration: none; }
+.vh-header-buttons { display: flex; gap: 10px; }
+
+.vh-container { max-width: 960px; margin: 32px auto; padding: 0 16px; }
+
+.vh-btn { display: inline-block; padding: 7px 16px; border-radius: 6px;
+    background: #1F6B75; color: #fff; border: 1px solid #1F6B75;
+    text-decoration: none; font-size: 0.95rem; }
+.vh-btn-outline { background: #fff; color: #1F6B75; }
+
+.vh-card { background: #FAF8F4; border: 1px solid #D9D4C7; border-radius: 8px;
+    padding: 16px 20px; margin-bottom: 12px; }
