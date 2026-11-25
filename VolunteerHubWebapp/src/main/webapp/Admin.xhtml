@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces"
+                template="/templates/MainTemplate.xhtml">
+    <ui:define name="title">VolunteerHub - Administration</ui:define>
+    <ui:define name="content">
+        <h:form id="adminForm">
+            <p:messages/>
+            <p:tabView>
+                <p:tab title="Pending events">
+                    <p:dataTable value="#{adminBean.pendingEvents}" var="e"
+                                 emptyMessage="No events waiting for validation.">
+                        <p:column headerText="Title">#{e.title}</p:column>
+                        <p:column headerText="Category">
+                            <p:tag value="#{e.category.title}" styleClass="vh-tag"/>
+                        </p:column>
+                        <p:column headerText="City">#{e.location.city}</p:column>
+                        <p:column headerText="Dates" style="white-space:nowrap">#{e.startDate} - #{e.endDate}</p:column>
+                        <p:column headerText="" style="width:260px; white-space:nowrap">
+                            <h:link outcome="Event" value="View" styleClass="vh-btn vh-btn-outline">
+                                <f:param name="id" value="#{e.eventId}"/>
+                            </h:link>
+                            <p:commandButton value="Accept" action="#{adminBean.accept(e)}"
+                                             update="adminForm"/>
+                            <p:commandButton value="Refuse" action="#{adminBean.refuse(e)}"
+                                             update="adminForm" styleClass="ui-button-outlined">
+                                <p:confirm header="Refuse event" message="Refuse #{e.title}?"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="All events">
+                    <p:dataTable value="#{adminBean.allEvents}" var="e" emptyMessage="No events.">
+                        <p:column headerText="Title">#{e.title}</p:column>
+                        <p:column headerText="City">#{e.location.city}</p:column>
+                        <p:column headerText="Dates" style="white-space:nowrap">#{e.startDate} - #{e.endDate}</p:column>
+                        <p:column headerText="Status">
+                            <span class="vh-status vh-status-#{e.status}">#{e.status}</span>
+                        </p:column>
+                        <p:column headerText="" style="width:180px; white-space:nowrap">
+                            <h:link outcome="Event" value="View" styleClass="vh-btn vh-btn-outline">
+                                <f:param name="id" value="#{e.eventId}"/>
+                            </h:link>
+                            <p:commandButton value="Remove" action="#{adminBean.remove(e)}"
+                                             update="adminForm" styleClass="ui-button-outlined">
+                                <p:confirm header="Remove event" message="Remove #{e.title} from the platform? This cannot be undone."/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="Accounts">
+                    <p:dataTable value="#{adminBean.accounts}" var="u" emptyMessage="No accounts.">
+                        <p:column headerText="Name">#{u.fullName}</p:column>
+                        <p:column headerText="Username">#{u.username}</p:column>
+                        <p:column headerText="Type">#{adminBean.typeOf(u)}</p:column>
+                        <p:column headerText="Status">
+                            <span class="vh-status vh-status-#{u.status}">#{u.status}</span>
+                        </p:column>
+                        <p:column headerText="" style="width:230px; white-space:nowrap">
+                            <p:commandButton value="Suspend" action="#{adminBean.suspend(u)}" update="adminForm"
+                                             styleClass="ui-button-outlined" rendered="#{u.status == 'ACTIVE'}">
+                                <p:confirm header="Suspend account" message="Suspend #{u.fullName}?"/>
+                            </p:commandButton>
+                            <p:commandButton value="Reactivate" action="#{adminBean.reactivate(u)}" update="adminForm"
+                                             rendered="#{u.status == 'SUSPENDED'}"/>
+                            <p:commandButton value="Remove" action="#{adminBean.removeUser(u)}" update="adminForm"
+                                             styleClass="ui-button-outlined">
+                                <p:confirm header="Remove account" message="Remove #{u.fullName}? This cannot be undone."/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+
+            <p:confirmDialog global="true">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"/>
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-outlined"/>
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

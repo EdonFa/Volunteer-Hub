@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces"
+                template="/templates/MainTemplate.xhtml">
+    <ui:define name="title">VolunteerHub - My profile</ui:define>
+    <ui:define name="content">
+        <h:form id="profileForm">
+            <p:messages/>
+            <div class="vh-profile">
+                <div class="vh-card">
+                    <div class="vh-section-label">Preferences</div>
+                    <div class="vh-form-grid">
+                        <p:outputLabel for="cats" value="Preferred categories"/>
+                        <p:selectCheckboxMenu id="cats" value="#{volunteerBean.selectedCategories}"
+                                              multiple="true" label="Choose categories">
+                            <f:selectItems value="#{appData.categories}" var="c"
+                                           itemLabel="#{c.title}" itemValue="#{c.title}"/>
+                        </p:selectCheckboxMenu>
+
+                        <p:outputLabel for="loc" value="Preferred location"/>
+                        <p:inputText id="loc" value="#{volunteerBean.preferredLocation}" placeholder="City"/>
+                    </div>
+                    <p:commandButton value="Save preferences" action="#{volunteerBean.savePreferences}"
+                                     update="profileForm"/>
+                </div>
+
+                <div class="vh-card">
+                    <div class="vh-section-label">Saved events</div>
+                    <div></div>
+                    <div class="vh-card">
+                        <div class="vh-section-label">Recommended for you</div>
+                        <ui:repeat value="#{volunteerBean.recommendations}" var="r">
+                            <div class="vh-card vh-event">
+                                <div>
+                                    <div class="vh-event-title">#{r.title}</div>
+                                    <div class="vh-meta">#{r.category.title} | #{r.location.city} | #{r.startDate} - #{r.endDate}</div>
+                                </div>
+                                <div class="vh-event-actions">
+                                    <h:link outcome="Event" value="View" styleClass="vh-btn">
+                                        <f:param name="id" value="#{r.eventId}"/>
+                                    </h:link>
+                                </div>
+                            </div>
+                        </ui:repeat>
+                        <h:panelGroup rendered="#{empty volunteerBean.recommendations}">
+                            <div class="vh-meta">No recommendations yet. Set your preferences to get some.</div>
+                        </h:panelGroup>
+                    </div>
+                    <ui:repeat value="#{volunteerBean.savedEvents}" var="e">
+                        <div class="vh-card vh-event">
+                            <div>
+                                <div class="vh-event-title">#{e.title}</div>
+                                <div class="vh-meta">#{e.category.title} | #{e.location.city} | #{e.startDate} - #{e.endDate}</div>
+                            </div>
+                            <div class="vh-event-actions">
+                                <h:link outcome="Event" value="View" styleClass="vh-btn">
+                                    <f:param name="id" value="#{e.eventId}"/>
+                                </h:link>
+                                <p:commandButton value="Remove" action="#{volunteerBean.removeSaved(e)}"
+                                                 update="profileForm" styleClass="ui-button-outlined"/>
+                            </div>
+                        </div>
+                    </ui:repeat>
+                    <h:panelGroup rendered="#{empty volunteerBean.savedEvents}">
+                        <div class="vh-meta">No saved events yet. Use the star on the home page.</div>
+                    </h:panelGroup>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

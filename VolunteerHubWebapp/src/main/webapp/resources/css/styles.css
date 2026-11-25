@@ -54,3 +54,20 @@ body { margin: 0; background: #F1EEE6; color: #2B2B2B;
 
 .ui-datatable .vh-btn, .ui-datatable .ui-button { padding: 4px 10px; font-size: 0.85rem; margin-right: 4px; }
 .ui-datatable .ui-button .ui-button-text { padding: 0; }
+
+.vh-profile { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; align-items: start; }
+.vh-profile .vh-card .vh-card { background: #fff; }
+
+.vh-star.ui-button { width: 38px; }
+
+.vh-form-grid .ui-selectcheckboxmenu { width: 100%; }
+
+.vh-tag-reco.ui-tag { background: #1F6B75; color: #fff; font-size: 0.75rem;
+    border-radius: 12px; margin-bottom: 4px; }
+.vh-card.vh-event:has(.vh-tag-reco) { border-left: 4px solid #1F6B75; }
+
+.ui-tabs .ui-tabs-nav li.ui-state-active a { color: #1F6B75 !important; border-color: #1F6B75 !important; }
+.ui-tabs .ui-tabs-nav li a { color: #6B6B6B; }
+
+.vh-status-ACTIVE    { background: #DDF1E4; color: #1E6B3A; }
+.vh-status-SUSPENDED { background: #F8DCDC; color: #8A1F1F; }

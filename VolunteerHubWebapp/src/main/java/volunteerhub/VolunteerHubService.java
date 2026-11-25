@@ -118,7 +118,7 @@ public class VolunteerHubService {
 
     public void closeEvent(UUID id) {
         check(eventTarget.path(id.toString()).path("close")
-                .request(MediaType.APPLICATION_JSON).method("PUT"));
+                .request(MediaType.APPLICATION_JSON).put(Entity.json("")));
     }
 
     private void check(Response response) {
@@ -133,5 +133,74 @@ public class VolunteerHubService {
                 .put(Entity.entity(event, MediaType.APPLICATION_JSON)));
     }
 
+    public List<Event> getSavedEvents(UUID volunteerId) {
+        return volunteerTarget.path(volunteerId.toString()).path("saved-events")
+                .request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<Event>>() {});
+    }
+
+    public void saveEvent(UUID volunteerId, UUID eventId) {
+        check(volunteerTarget.path(volunteerId.toString()).path("saved-events").path(eventId.toString())
+                .request(MediaType.APPLICATION_JSON).put(Entity.json("")));
+    }
+
+    public void removeSavedEvent(UUID volunteerId, UUID eventId) {
+        check(volunteerTarget.path(volunteerId.toString()).path("saved-events").path(eventId.toString())
+                .request(MediaType.APPLICATION_JSON).delete());
+    }
+
+    public Volunteer getVolunteer(UUID id) {
+        return volunteerTarget.path(id.toString())
+                .request(MediaType.APPLICATION_JSON).get(Volunteer.class);
+    }
+
+    public void updateVolunteer(UUID id, Volunteer volunteer) {
+        check(volunteerTarget.path(id.toString()).request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(volunteer, MediaType.APPLICATION_JSON)));
+    }
+    public List<Event> getRecommendations(UUID volunteerId) {
+        return volunteerTarget.path(volunteerId.toString()).path("recommendations")
+                .request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<Event>>() {});
+    }
+
+    public void acceptEvent(UUID adminId, UUID eventId) {
+        check(administratorTarget.path(adminId.toString()).path("events").path(eventId.toString())
+                .path("accept").request(MediaType.APPLICATION_JSON).put(Entity.json("")));
+    }
+
+    public void refuseEvent(UUID adminId, UUID eventId) {
+        check(administratorTarget.path(adminId.toString()).path("events").path(eventId.toString())
+                .path("refuse").request(MediaType.APPLICATION_JSON).put(Entity.json("")));
+    }
+    public void adminRemoveEvent(UUID adminId, UUID eventId) {
+        check(administratorTarget.path(adminId.toString()).path("events").path(eventId.toString())
+                .request(MediaType.APPLICATION_JSON).delete());
+    }
+
+    public List<Volunteer> getAllVolunteers() {
+        return volunteerTarget.request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<Volunteer>>() {});
+    }
+
+    public List<Organisation> getAllOrganisations() {
+        return organisationTarget.request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<Organisation>>() {});
+    }
+
+    public void suspendUser(UUID adminId, UUID userId) {
+        check(administratorTarget.path(adminId.toString()).path("users").path(userId.toString())
+                .path("suspend").request(MediaType.APPLICATION_JSON).put(Entity.json("")));
+    }
+
+    public void reactivateUser(UUID adminId, UUID userId) {
+        check(administratorTarget.path(adminId.toString()).path("users").path(userId.toString())
+                .path("reactivate").request(MediaType.APPLICATION_JSON).put(Entity.json("")));
+    }
+
+    public void removeUser(UUID adminId, UUID userId) {
+        check(administratorTarget.path(adminId.toString()).path("users").path(userId.toString())
+                .request(MediaType.APPLICATION_JSON).delete());
+    }
 
     }

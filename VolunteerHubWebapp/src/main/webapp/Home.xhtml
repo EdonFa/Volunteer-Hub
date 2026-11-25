@@ -23,6 +23,8 @@
                 <div class="vh-card vh-event">
                     <div>
                         <div class="vh-event-title">#{e.title}</div>
+                        <p:tag value="Recommended for you" styleClass="vh-tag-reco"
+                               rendered="#{homeBean.isRecommended(e)}"/>
                         <div class="vh-meta">
                             <p:tag value="#{e.category.title}" styleClass="vh-tag"/>
                             #{e.location.city} |
@@ -37,6 +39,11 @@
                         <div class="vh-meta">#{e.volunteersNeeded} volunteers needed</div>
                     </div>
                     <div class="vh-event-actions">
+                        <p:commandButton icon="#{homeBean.isSaved(e) ? 'pi pi-star-fill' : 'pi pi-star'}"
+                                         action="#{homeBean.toggleSave(e)}" update="homeForm"
+                                         styleClass="ui-button-outlined vh-star"
+                                         title="#{homeBean.isSaved(e) ? 'Remove from saved' : 'Save event'}"
+                                         rendered="#{loginBean.volunteer}"/>
                         <h:link outcome="Event" value="View" styleClass="vh-btn">
                             <f:param name="id" value="#{e.eventId}"/>
                         </h:link>
