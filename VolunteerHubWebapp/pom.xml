@@ -82,6 +82,7 @@
     </dependencies>
 
     <build>
+        <finalName>VolunteerHubWebapp</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

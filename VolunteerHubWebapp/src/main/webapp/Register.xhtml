@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces"
+                template="/templates/MainTemplate.xhtml">
+    <ui:define name="title">VolunteerHub - Sign up</ui:define>
+    <ui:define name="content">
+        <h:form id="registerForm">
+            <div class="vh-card">
+                <div class="vh-section-label">Choose account type</div>
+                <p:messages/>
+
+                <p:selectOneRadio value="#{registerBean.accountType}">
+                    <f:selectItem itemLabel="Volunteer" itemValue="VOLUNTEER"/>
+                    <f:selectItem itemLabel="Organisation" itemValue="ORGANISATION"/>
+                    <p:ajax update="orgFields"/>
+                </p:selectOneRadio>
+
+                <div class="vh-register">
+                    <div class="vh-form-grid">
+                        <div class="vh-section-label">All accounts</div>
+                        <p:outputLabel for="fn" value="First name "/>
+                        <p:inputText id="fn" value="#{registerBean.firstName}" required="true"/>
+                        <p:outputLabel for="ln" value="Last name "/>
+                        <p:inputText id="ln" value="#{registerBean.lastName}" required="true"/>
+                        <p:outputLabel for="un" value="Username "/>
+                        <p:inputText id="un" value="#{registerBean.username}" required="true"/>
+                        <p:outputLabel for="em" value="Email "/>
+                        <p:inputText id="em" value="#{registerBean.email}" required="true"/>
+                        <p:outputLabel for="pw" value="Password "/>
+                        <p:password id="pw" value="#{registerBean.password}" required="true"
+                                    feedback="true"/>
+                    </div>
+
+                    <h:panelGroup id="orgFields" layout="block">
+                        <h:panelGroup rendered="#{registerBean.organisation}" layout="block"
+                                      styleClass="vh-form-grid">
+                            <div class="vh-section-label">Organisation only</div>
+                            <p:outputLabel for="on" value="Organisation name "/>
+                            <p:inputText id="on" value="#{registerBean.organisationName}" required="true"/>
+                            <p:outputLabel for="ph" value="Phone number"/>
+                            <p:inputText id="ph" value="#{registerBean.phoneNumber}"/>
+                            <p:outputLabel for="web" value="Website URL "/>
+                            <p:inputText id="web" value="#{registerBean.websiteUrl}" required="true"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </div>
+
+                <p:commandButton value="Create account" action="#{registerBean.register}"
+                                 update="registerForm"/>
+                <div class="vh-meta">* required fields</div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

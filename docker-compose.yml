@@ -13,4 +13,4 @@ services:
     volumes:
       # auto deploy: maps each local war into Payara's autodeploy folder
       - ./VolunteerHubService/target/VolunteerHubService.war:/opt/payara/appserver/glassfish/domains/domain1/autodeploy/VolunteerHubService.war
-      - ./VolunteerHubWebapp/target/VolunteerHubWebapp-1.0-SNAPSHOT.war:/opt/payara/appserver/glassfish/domains/domain1/autodeploy/VolunteerHubWebapp-1.0-SNAPSHOT.war
+      - ./VolunteerHubWebapp/target/VolunteerHubWebapp.war:/opt/payara/appserver/glassfish/domains/domain1/autodeploy/VolunteerHubWebapp.war

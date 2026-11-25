@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces"
+                template="/templates/MainTemplate.xhtml">
+    <ui:define name="title">VolunteerHub - Log in</ui:define>
+    <ui:define name="content">
+        <h:form id="loginForm">
+            <div class="vh-card vh-form">
+                <div class="vh-section-label">Log in</div>
+                <p:messages/>
+                <p:outputLabel for="username" value="Username"/>
+                <p:inputText id="username" value="#{loginBean.username}" required="true"/>
+                <p:outputLabel for="password" value="Password"/>
+                <p:password id="password" value="#{loginBean.password}" required="true"/>
+                <p:commandButton value="Log in" action="#{loginBean.login}" update="loginForm"/>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

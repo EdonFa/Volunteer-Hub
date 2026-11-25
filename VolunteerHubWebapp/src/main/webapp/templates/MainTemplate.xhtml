@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
-      xmlns:ui="jakarta.faces.facelets">
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces">
+
 <h:head>
     <title><ui:insert name="title">VolunteerHub</ui:insert></title>
     <h:outputStylesheet name="css/styles.css"/>
@@ -9,12 +11,20 @@
 <h:body>
     <header class="vh-header">
         <h:link outcome="Home" styleClass="vh-logo" value="VolunteerHub"/>
-        <div class="vh-header-buttons">
-            <ui:insert name="header-buttons">
-                <a href="#" class="vh-btn vh-btn-outline">Log in</a>
-                <a href="#" class="vh-btn">Sign up</a>
-            </ui:insert>
-        </div>
+        <h:form styleClass="vh-header-buttons">
+            <h:panelGroup rendered="#{not loginBean.loggedIn}">
+                <h:link outcome="Login" value="Log in" styleClass="vh-btn vh-btn-outline"/>
+                <h:link outcome="Register" value="Sign up" styleClass="vh-btn"/>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{loginBean.loggedIn}">
+                <span class="vh-meta">Hello, #{loginBean.user.fullName}</span>
+                <h:link outcome="MyEvents" value="My events" styleClass="vh-btn vh-btn-outline"
+                        rendered="#{loginBean.organisation}"/>
+                <h:link outcome="CreateEvent" value="Create event" styleClass="vh-btn"
+                        rendered="#{loginBean.organisation}"/>
+                <h:commandLink action="#{loginBean.logout}" value="Log out" styleClass="vh-btn vh-btn-outline"/>
+            </h:panelGroup>
+        </h:form>
     </header>
     <main class="vh-container">
         <ui:insert name="content"/>

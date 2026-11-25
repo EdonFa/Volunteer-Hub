@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="primefaces"
+                template="/templates/MainTemplate.xhtml">
+    <ui:define name="title">VolunteerHub - New event</ui:define>
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="id" value="#{createEventBean.id}"/>
+            <f:viewAction action="#{createEventBean.load}"/>
+        </f:metadata>
+        <h:form id="createForm">
+            <div class="vh-card">
+                <div class="vh-section-label">#{createEventBean.editing ? 'Edit event' : 'Post a new event'}</div>
+                <p:messages/>
+                <div class="vh-register">
+                    <div class="vh-form-grid">
+                        <p:outputLabel for="title" value="Title"/>
+                        <p:inputText id="title" value="#{createEventBean.title}" required="true"/>
+
+                        <p:outputLabel for="cat" value="Category"/>
+                        <p:selectOneMenu id="cat" value="#{createEventBean.categoryTitle}" required="true">
+                            <f:selectItem itemLabel="Choose a category" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{appData.categories}" var="c"
+                                           itemLabel="#{c.title}" itemValue="#{c.title}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="desc" value="Description"/>
+                        <p:inputTextarea id="desc" value="#{createEventBean.description}"
+                                         rows="4" required="true"/>
+
+                        <p:outputLabel for="street" value="Street"/>
+                        <p:inputText id="street" value="#{createEventBean.street}" required="true"/>
+                        <p:outputLabel for="zip" value="Postal code"/>
+                        <p:inputText id="zip" value="#{createEventBean.postalCode}" required="true"/>
+                        <p:outputLabel for="city" value="City"/>
+                        <p:inputText id="city" value="#{createEventBean.city}" required="true"/>
+
+                        <p:outputLabel for="start" value="Start date"/>
+                        <p:datePicker id="start" value="#{createEventBean.startDate}"
+                                      pattern="dd.MM.yyyy" required="true"/>
+                        <p:outputLabel for="end" value="End date"/>
+                        <p:datePicker id="end" value="#{createEventBean.endDate}"
+                                      pattern="dd.MM.yyyy" required="true"/>
+
+                        <p:outputLabel for="vol" value="Volunteers needed"/>
+                        <p:inputNumber id="vol" value="#{createEventBean.volunteersNeeded}"
+                                       decimalPlaces="0" minValue="1" required="true"/>
+
+                        <p:outputLabel for="link" value="Recruitment link"/>
+                        <p:inputText id="link" value="#{createEventBean.recruitmentLink}" required="true"/>
+                    </div>
+                </div>
+                <p:commandButton value="Save" action="#{createEventBean.save}" update="createForm"/>
+                <h:link outcome="MyEvents" value="Cancel" styleClass="vh-btn vh-btn-outline"/>
+                <div class="vh-meta">* required fields. The event stays pending until an administrator accepts it.</div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

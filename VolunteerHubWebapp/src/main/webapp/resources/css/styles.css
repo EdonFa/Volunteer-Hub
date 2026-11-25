@@ -34,3 +34,23 @@ body { margin: 0; background: #F1EEE6; color: #2B2B2B;
     text-transform: uppercase; margin-top: 10px; }
 
 .vh-weather { margin-top: 16px; }
+
+.vh-form { max-width: 380px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+.vh-header-buttons span { margin-right: 6px; }
+
+.vh-register { max-width: 420px; margin: 12px 0; }
+.vh-form-grid { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.vh-form-grid .ui-inputfield, .vh-form-grid .ui-password { width: 100%; }
+
+.vh-status { padding: 2px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
+.vh-status-PENDING   { background: #FFF1D6; color: #8A5A00; }
+.vh-status-PUBLISHED { background: #DDF1E4; color: #1E6B3A; }
+.vh-status-REFUSED   { background: #F8DCDC; color: #8A1F1F; }
+.vh-status-CLOSED    { background: #E4E4E4; color: #555; }
+.vh-status-EXPIRED   { background: #E4E4E4; color: #555; }
+
+.vh-form-grid .ui-selectonemenu, .vh-form-grid .ui-datepicker,
+.vh-form-grid .ui-inputnumber, .vh-form-grid .ui-inputtextarea { width: 100%; }
+
+.ui-datatable .vh-btn, .ui-datatable .ui-button { padding: 4px 10px; font-size: 0.85rem; margin-right: 4px; }
+.ui-datatable .ui-button .ui-button-text { padding: 0; }
